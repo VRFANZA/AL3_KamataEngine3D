@@ -14,6 +14,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	// DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
+	// ImGuiManagerのインスタンスの取得
+	ImGuiManager* imguiManager = ImGuiManager::GetInstance();
+
 	// シーンのインスタンスの生成
 	SceneManager* sceneManager = new SceneManager();
 	sceneManager->ChangeScene(SceneManager::GAME);
@@ -25,14 +28,23 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 			break;
 		}
 
+		// ImGui受付処理
+		imguiManager->Begin();
+
 		// 更新処理
 		sceneManager->Update();
+
+		// ImGui受付終了
+		imguiManager->End();
 
 		// 描画開始
 		dxCommon->PreDraw();
 
 		// 描画処理
 		sceneManager->Draw();
+
+		// ImGui描画
+		imguiManager->Draw();
 
 		// 描画終了
 		dxCommon->PostDraw();
