@@ -11,6 +11,7 @@ void SceneManager::ChangeScene(Scene scene) {
 	switch (scene) {
 	case SceneManager::GAME:
 		nowScene_ = new GamePlayScene;
+		nowScene_->Initialize();
 
 		break;
 	default:
