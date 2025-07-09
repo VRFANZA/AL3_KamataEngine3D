@@ -26,7 +26,7 @@ Matrix4x4 GamePlayScene::Multiply(Matrix4x4 matrix1, Matrix4x4 matrix2) {
 	return resoultMatrix4x4;
 }
 
-Matrix4x4 GamePlayScene::MakeAffineMatrix(Vector3& scale,Vector3& rotate,Vector3& translate) {
+Matrix4x4 GamePlayScene::MakeAffineMatrix(Vector3& scale, Vector3& rotate, Vector3& translate) {
 	//====================
 	// 拡縮の行列の作成
 	//====================
@@ -180,57 +180,97 @@ void GamePlayScene::Initialize() {
 	camera_ = new Camera;
 	camera_->Initialize();
 
+	// デバッグカメラの生成
+	debugCamera_ = new DebugCamera(1280, 720);
+
 	// プレイヤーの生成
 	player_ = new Player();
 
 	// プレイヤーの初期化
-	player_->Initialize(model_,textureHandle_,camera_);
+	player_->Initialize(model_, textureHandle_, camera_);
 
 	//============
 	// ブロック
 	//============
 	// 要素数
+	const uint32_t kNumBlockVirtical = 10;
 	const uint32_t kNumBlockHorizontal = 20;
 
 	// ブロック1個分の横幅
+	const float kBlockHeight = 2.0f;
 	const float kBlockWidth = 2.0f;
 
 	// 要素数を変更する
-	worldTransformBlocks_.resize(kNumBlockHorizontal);
+	// 列数を設定
+	worldTransformBlocks_.resize(kNumBlockVirtical);
+	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
 
-	// ブロックの生成
-	for (uint32_t i = 0; i < kNumBlockHorizontal; ++i) {
-		worldTransformBlocks_[i] = new WorldTransform();
-		worldTransformBlocks_[i]->Initialize();
-		worldTransformBlocks_[i]->translation_.x = kBlockWidth * i;
-		worldTransformBlocks_[i]->translation_.y = 0.0f;
+		// 1列の要素数を設定
+		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
+
+		// ブロックの生成
+		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
+			if (j % 2 == 0) {
+				worldTransformBlocks_[i][j] = new WorldTransform();
+				worldTransformBlocks_[i][j]->Initialize();
+				worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
+				worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
+			}
+		}
 	}
 }
 
 void GamePlayScene::Update() {
 	// ここにインゲームの更新処理を書く
 
+	// デバッグカメラの更新
+#ifdef _DEBUG
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		isDebugCameraActive_ = !isDebugCameraActive_; // フラグをトグル
+	}
+
+	if (isDebugCameraActive_) {
+		// デバッグカメラの更新
+		debugCamera_->Update();
+		camera_->matView = debugCamera_->GetCamera().matView;
+		camera_->matProjection = debugCamera_->GetCamera().matProjection;
+
+		// ビュープロジェクション行列の更新と転送
+		camera_->TransferMatrix();
+
+	} else {
+		// ビュープロジェクション行列の更新と転送
+		camera_->UpdateMatrix();
+	}
+
+#endif
+
+	debugCamera_->Update();
+
 	// プレイヤーの更新処理
 	player_->Update();
 
 	// ブロックの更新処理
-	
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock)
+				continue;
 
-	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
-		// アフィン変換行列の作成
-		Matrix4x4 blockAffine = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+				// アフィン変換行列の作成
+				Matrix4x4 blockAffine = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
 
-		worldTransformBlock->matWorld_ = blockAffine;
+				worldTransformBlock->matWorld_ = blockAffine;
 
-		// 定数バッファに転送
-		worldTransformBlock->TransferMatrix();
+				// 定数バッファに転送
+				worldTransformBlock->TransferMatrix();
+		}
 	}
 }
 
 void GamePlayScene::Draw() {
 	// ここにインゲームの描画処理を書く
 	// プレイヤーの描画処理
-	//player_->Draw();
+	// player_->Draw();
 
 	// スプライト描画前処理
 	Sprite::PreDraw();
@@ -245,8 +285,13 @@ void GamePlayScene::Draw() {
 
 	// ここからモデルの描画
 	// ブロックの描画
-	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
-		blockModel_->Draw(*worldTransformBlock, *camera_);
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock)
+				continue;
+
+				blockModel_->Draw(*worldTransformBlock, *camera_);
+		}
 	}
 
 	// 3Dモデル描画後処理
@@ -259,10 +304,13 @@ GamePlayScene::~GamePlayScene() {
 	delete player_;
 	delete model_;
 	delete blockModel_;
-	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
-		delete worldTransformBlock;
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			delete worldTransformBlock;
+		}
 	}
 	worldTransformBlocks_.clear();
 	delete sprite_;
 	delete camera_;
+	delete debugCamera_;
 }

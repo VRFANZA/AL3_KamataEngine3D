@@ -59,10 +59,14 @@ private:
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
-	std::vector<WorldTransform*> worldTransformBlocks_;
+	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 
 	// カメラ
 	Camera* camera_ = nullptr;
+
+	// デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr;
+	bool isDebugCameraActive_ = true;
 
 	// プレイヤー
 	Player* player_ = nullptr;
