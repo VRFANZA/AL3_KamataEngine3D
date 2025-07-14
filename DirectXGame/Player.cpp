@@ -20,14 +20,8 @@ void Player::Update() {
 
 void Player::Draw() {
 
-	// 3Dモデル描画前処理
-	Model::PreDraw();
-
 	// ここからモデルの描画
 	model_->Draw(worldTransform_, *camera_, textereHandle_);
-
-	// 3Dモデル描画後処理
-	Model::PostDraw();
 
 }
 

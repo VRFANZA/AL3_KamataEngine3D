@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "BaseScene.h"
 #include "Player.h"
+#include "Skydome.h"
 #include "Transform.h"
 #include <vector>
 
@@ -56,6 +57,7 @@ private:
 	// 3Dモデル
 	Model* model_ = nullptr;
 	Model* blockModel_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -70,4 +72,7 @@ private:
 
 	// プレイヤー
 	Player* player_ = nullptr;
+
+	// 天球
+	Skydome* skydome_ = nullptr;
 };

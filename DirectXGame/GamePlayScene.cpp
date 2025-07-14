@@ -172,12 +172,14 @@ void GamePlayScene::Initialize() {
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	blockModel_ = Model::Create();
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 
 	// カメラの初期化
 	camera_ = new Camera;
+	camera_->farZ = 1500.0f;// なんかここいじっても変わんないからCamera.hいじってる
 	camera_->Initialize();
 
 	// デバッグカメラの生成
@@ -188,6 +190,12 @@ void GamePlayScene::Initialize() {
 
 	// プレイヤーの初期化
 	player_->Initialize(model_, textureHandle_, camera_);
+
+	// 天球の生成
+	skydome_ = new Skydome();
+
+	// 天球の初期化
+	skydome_->Initialize(modelSkydome_, camera_);
 
 	//============
 	// ブロック
@@ -250,6 +258,8 @@ void GamePlayScene::Update() {
 	// プレイヤーの更新処理
 	player_->Update();
 
+	skydome_->Update();
+
 	// ブロックの更新処理
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -269,8 +279,7 @@ void GamePlayScene::Update() {
 
 void GamePlayScene::Draw() {
 	// ここにインゲームの描画処理を書く
-	// プレイヤーの描画処理
-	// player_->Draw();
+
 
 	// スプライト描画前処理
 	Sprite::PreDraw();
@@ -282,6 +291,12 @@ void GamePlayScene::Draw() {
 
 	// 3Dモデル描画前処理
 	Model::PreDraw();
+
+	// プレイヤーの描画処理
+	player_->Draw();
+
+	// 天球の描画
+	skydome_->Draw();
 
 	// ここからモデルの描画
 	// ブロックの描画
@@ -304,6 +319,7 @@ GamePlayScene::~GamePlayScene() {
 	delete player_;
 	delete model_;
 	delete blockModel_;
+	delete modelSkydome_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;
