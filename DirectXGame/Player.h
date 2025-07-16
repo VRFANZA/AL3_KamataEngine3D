@@ -1,6 +1,7 @@
 #pragma once
 #include <KamataEngine.h>
 #include <cassert>
+#include "WorldTransformUtil.h"
 
 using namespace KamataEngine;
 
@@ -35,4 +36,7 @@ private:
 
 	// テクスチャハンドル
 	uint32_t textereHandle_ = 0;
+
+	// ワールドトランスフォーム更新クラス
+	WorldTransformUtil* worldTransformUtil_ = nullptr;
 };

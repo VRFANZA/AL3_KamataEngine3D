@@ -10,12 +10,16 @@ void Player::Initialize(Model* model, uint32_t textureHandle,Camera* camera) {
 	textereHandle_ = textureHandle;
 	camera_ = camera;
 
+	// ワールドトランスフォーム更新クラスの生成
+	worldTransformUtil_ = new WorldTransformUtil();
+
 	worldTransform_.Initialize();
 }
 
 void Player::Update() {
-	// 行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
+
+	worldTransformUtil_->WorldTransformUpdate(worldTransform_);
+
 }
 
 void Player::Draw() {
@@ -25,6 +29,6 @@ void Player::Draw() {
 
 }
 
-Player::~Player() {
-
+Player::~Player() { 
+	delete worldTransformUtil_;
 }
