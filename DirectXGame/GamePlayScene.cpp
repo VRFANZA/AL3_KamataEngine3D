@@ -197,6 +197,11 @@ void GamePlayScene::Initialize() {
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_, camera_);
 
+	// マップチップ
+	mapChipField_ = new MapChipField;
+
+	mapChipField_->LoadMapChipCsv("Resources/AL3_02_04_mapchip.csv");
+
 	// ワールドトランスフォーム更新クラスの生成
 	worldTransformUtil_ = new WorldTransformUtil();
 
@@ -323,6 +328,7 @@ GamePlayScene::~GamePlayScene() {
 	delete model_;
 	delete blockModel_;
 	delete modelSkydome_;
+	delete mapChipField_;
 	delete worldTransformUtil_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {

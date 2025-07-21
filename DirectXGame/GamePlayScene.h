@@ -4,6 +4,7 @@
 #include "BaseScene.h"
 #include "Player.h"
 #include "Skydome.h"
+#include "MapChipField.h"
 #include "Transform.h"
 #include "WorldTransformUtil.h"
 #include <vector>
@@ -77,6 +78,9 @@ private:
 
 	// 天球
 	Skydome* skydome_ = nullptr;
+
+	// マップチップ
+	MapChipField* mapChipField_ = nullptr;
 
 	// ワールドトランスフォーム更新クラス
 	WorldTransformUtil* worldTransformUtil_ = nullptr;
