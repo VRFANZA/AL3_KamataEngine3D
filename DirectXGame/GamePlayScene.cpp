@@ -197,6 +197,9 @@ void GamePlayScene::Initialize() {
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_, camera_);
 
+	// ワールドトランスフォーム更新クラスの生成
+	worldTransformUtil_ = new WorldTransformUtil();
+
 	//============
 	// ブロック
 	//============
@@ -320,6 +323,7 @@ GamePlayScene::~GamePlayScene() {
 	delete model_;
 	delete blockModel_;
 	delete modelSkydome_;
+	delete worldTransformUtil_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;

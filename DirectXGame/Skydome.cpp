@@ -18,7 +18,7 @@ void Skydome::Update() {
 
 void Skydome::Draw() {
 
-	assert(cameraSkydome_ && "カメラぬるぽ");
+	assert(cameraSkydome_ && "キャメラぬるぽ");
 
 	// ここからモデルの描画
 	modelSkydome_->Draw(worldTransform_, *cameraSkydome_);

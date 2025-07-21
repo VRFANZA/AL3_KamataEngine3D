@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Skydome.h"
 #include "Transform.h"
+#include "WorldTransformUtil.h"
 #include <vector>
 
 using namespace KamataEngine;
@@ -56,6 +57,7 @@ private:
 
 	// 3Dモデル
 	Model* model_ = nullptr;
+	Model* playerModel_ = nullptr;
 	Model* blockModel_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 
@@ -75,4 +77,7 @@ private:
 
 	// 天球
 	Skydome* skydome_ = nullptr;
+
+	// ワールドトランスフォーム更新クラス
+	WorldTransformUtil* worldTransformUtil_ = nullptr;
 };
