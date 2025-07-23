@@ -12,6 +12,8 @@ public:
 	/// </summary>
 	void Initialize(Model* model,uint32_t textureHandle,Camera* camera);
 
+	void Initialize(Model* model, Camera* camera);
+
 	/// <summary>
 	/// 更新処理
 	/// </summary>

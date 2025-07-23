@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <cassert>
+#include <map>
 
 using namespace KamataEngine;
 
@@ -34,6 +35,10 @@ public:
 
 	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
 
+	uint32_t GetNumBlockVirtical();
+
+	uint32_t GetNumBlockHorizontal();
+
 private:
 	// 1ブロックのサイズ
 	static inline const float kBlockWidth = 1.0f;
@@ -47,6 +52,6 @@ private:
 
 	WorldTransform worldTransform_;
 
-	Model model_;
+	Model* model_ = nullptr;
 
 };

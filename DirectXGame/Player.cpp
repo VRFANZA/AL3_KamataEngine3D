@@ -16,6 +16,17 @@ void Player::Initialize(Model* model, uint32_t textureHandle,Camera* camera) {
 	worldTransform_.Initialize();
 }
 
+void Player::Initialize(Model* model, Camera* camera) {
+	// NULLチェック
+	assert(model);
+	assert(camera);
+
+	worldTransform_.Initialize();
+
+	model_ = model;
+	camera_ = camera;
+}
+
 void Player::Update() {
 
 	worldTransformUtil_->WorldTransformUpdate(worldTransform_);
@@ -25,7 +36,7 @@ void Player::Update() {
 void Player::Draw() {
 
 	// ここからモデルの描画
-	model_->Draw(worldTransform_, *camera_, textereHandle_);
+	model_->Draw(worldTransform_, *camera_);
 
 }
 

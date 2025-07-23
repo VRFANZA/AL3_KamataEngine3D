@@ -164,14 +164,15 @@ void GamePlayScene::Initialize() {
 	// ここにインゲームの初期化処理を書く
 
 	// テクスチャの読み込み
-	textureHandle_ = TextureManager::Load("uvChecker.png");
+	//textureHandle_ = TextureManager::Load("uvChecker.png");
 
 	// スプライトのインスタンスを生成
-	sprite_ = Sprite::Create(textureHandle_, {100, 50});
+	//sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
 	// 3Dモデルの生成
-	model_ = Model::Create();
-	blockModel_ = Model::Create();
+	//model_ = Model::Create();
+	playerModel_ = Model::CreateFromOBJ("playerModel", true);
+	blockModel_ = Model::CreateFromOBJ("Block", true);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// ワールドトランスフォームの初期化
@@ -189,7 +190,7 @@ void GamePlayScene::Initialize() {
 	player_ = new Player();
 
 	// プレイヤーの初期化
-	player_->Initialize(model_, textureHandle_, camera_);
+	player_->Initialize(playerModel_, camera_);
 
 	// 天球の生成
 	skydome_ = new Skydome();
@@ -202,38 +203,12 @@ void GamePlayScene::Initialize() {
 
 	mapChipField_->LoadMapChipCsv("Resources/AL3_02_04_mapchip.csv");
 
+	GenerateBlocks();
+
 	// ワールドトランスフォーム更新クラスの生成
 	worldTransformUtil_ = new WorldTransformUtil();
 
-	//============
-	// ブロック
-	//============
-	// 要素数
-	const uint32_t kNumBlockVirtical = 10;
-	const uint32_t kNumBlockHorizontal = 20;
-
-	// ブロック1個分の横幅
-	const float kBlockHeight = 2.0f;
-	const float kBlockWidth = 2.0f;
-
-	// 要素数を変更する
-	// 列数を設定
-	worldTransformBlocks_.resize(kNumBlockVirtical);
-	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
-
-		// 1列の要素数を設定
-		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
-
-		// ブロックの生成
-		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
-			if (j % 2 == 0) {
-				worldTransformBlocks_[i][j] = new WorldTransform();
-				worldTransformBlocks_[i][j]->Initialize();
-				worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
-				worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
-			}
-		}
-	}
+	
 }
 
 void GamePlayScene::Update() {
@@ -321,11 +296,39 @@ void GamePlayScene::Draw() {
 	Model::PostDraw();
 }
 
+void GamePlayScene::GenerateBlocks() {
+	//============
+	// ブロック
+	//============
+	// 要素数
+	const uint32_t kNumBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	const uint32_t kNumBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+
+	// 要素数を変更する
+	// 列数を設定
+	worldTransformBlocks_.resize(kNumBlockVirtical);
+	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
+
+		// 1列の要素数を設定
+		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
+
+		// ブロックの生成
+		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
+			if (mapChipField_->GetMapChipTypeByIndex(j,i) == MapChipType::kBlock) {
+				WorldTransform* worldTransform = new WorldTransform();
+				worldTransform->Initialize();
+				worldTransformBlocks_[i][j] = worldTransform;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			}
+		}
+	}
+}
+
 GamePlayScene::~GamePlayScene() {
 	// ここに解放処理とか書く
 	// インスタンスの持ち主のみが解放
 	delete player_;
-	delete model_;
+	//delete model_;
 	delete blockModel_;
 	delete modelSkydome_;
 	delete mapChipField_;
