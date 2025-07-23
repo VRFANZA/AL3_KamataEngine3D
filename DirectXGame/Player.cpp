@@ -21,6 +21,9 @@ void Player::Initialize(Model* model, Camera* camera) {
 	assert(model);
 	assert(camera);
 
+	// ワールドトランスフォーム更新クラスの生成
+	worldTransformUtil_ = new WorldTransformUtil();
+
 	worldTransform_.Initialize();
 
 	model_ = model;

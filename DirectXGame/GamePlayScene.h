@@ -62,7 +62,7 @@ private:
 	Sprite* sprite_ = nullptr;
 
 	// 3Dモデル
-	//Model* model_ = nullptr;
+	Model* model_ = nullptr;
 	Model* playerModel_ = nullptr;
 	Model* blockModel_ = nullptr;
 	Model* modelSkydome_ = nullptr;
