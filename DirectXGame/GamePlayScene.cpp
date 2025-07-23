@@ -170,7 +170,7 @@ void GamePlayScene::Initialize() {
 	//sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
 	// 3Dモデルの生成
-	model_ = Model::Create();
+	//model_ = Model::Create();
 	playerModel_ = Model::CreateFromOBJ("player", true);
 	blockModel_ = Model::CreateFromOBJ("Block", true);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
@@ -330,7 +330,7 @@ GamePlayScene::~GamePlayScene() {
 	// ここに解放処理とか書く
 	// インスタンスの持ち主のみが解放
 	delete player_;
-	delete model_;
+	//delete model_;
 	delete blockModel_;
 	delete modelSkydome_;
 	delete mapChipField_;
