@@ -31,4 +31,8 @@ public:
 	/// <param name="worldTransform"></param>
 	void WorldTransformUpdate(WorldTransform& worldTransform);
 
+private:
+
+	WorldTransform worldTransform_;
+
 };

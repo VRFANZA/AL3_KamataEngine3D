@@ -188,10 +188,11 @@ void GamePlayScene::Initialize() {
 	// プレイヤーの生成
 	player_ = new Player();
 
-	// プレイヤーの初期化
-	//player_->Initialize(model_,textureHandle_, camera_);
+	// プレイヤーの初期位置をマップチップ番号で指定
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
-	player_->Initialize(playerModel_, camera_);
+	// プレイヤーの初期化
+	player_->Initialize(playerModel_, camera_,playerPosition);
 
 	// 天球の生成
 	skydome_ = new Skydome();

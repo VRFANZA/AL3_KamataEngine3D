@@ -8,7 +8,6 @@ using namespace KamataEngine;
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	
 	// エンジンの初期化
-	//KamataEngine::Initialize(L"LE2B_16_タカムラ_シュン_AL3");
 	Initialize(L"LE2B_16_タカムラ_シュン_AL3");
 
 	// DirectXCommonインスタンスの取得
