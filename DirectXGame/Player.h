@@ -84,4 +84,7 @@ private:
 	// 旋回タイマー
 	float turnTimer_ = 0.0f;
 
+	// 旋回時間
+	static inline const float kTimeTurn = 0.3f;
+
 };
