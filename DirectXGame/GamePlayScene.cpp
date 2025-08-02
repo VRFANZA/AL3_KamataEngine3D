@@ -185,6 +185,13 @@ void GamePlayScene::Initialize() {
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
+	// マップチップ
+	mapChipField_ = new MapChipField;
+
+	mapChipField_->LoadMapChipCsv("Resources/AL3_02_04_mapchip.csv");
+
+	GenerateBlocks();
+
 	// プレイヤーの生成
 	player_ = new Player();
 
@@ -200,16 +207,8 @@ void GamePlayScene::Initialize() {
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_, camera_);
 
-	// マップチップ
-	mapChipField_ = new MapChipField;
-
-	mapChipField_->LoadMapChipCsv("Resources/AL3_02_04_mapchip.csv");
-
-	GenerateBlocks();
-
 	// ワールドトランスフォーム更新クラスの生成
 	worldTransformUtil_ = new WorldTransformUtil();
-
 	
 }
 
@@ -296,6 +295,7 @@ void GamePlayScene::Draw() {
 
 	// 3Dモデル描画後処理
 	Model::PostDraw();
+
 }
 
 void GamePlayScene::GenerateBlocks() {

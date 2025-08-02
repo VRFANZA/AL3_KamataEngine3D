@@ -28,6 +28,9 @@ void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
 	assert(model);
 	assert(camera);
 
+	model_ = model;
+	camera_ = camera;
+
 	// ワールドトランスフォーム更新クラスの生成
 	worldTransformUtil_ = new WorldTransformUtil();
 
@@ -37,8 +40,6 @@ void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
 	// モデルをy軸回りにπ/2(90°)回転
 	//worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 
-	model_ = model;
-	camera_ = camera;
 }
 
 void Player::Update() {
@@ -58,6 +59,11 @@ void Player::Update() {
 				// プレイヤーモデルを右向きに変更
 				if (lrDirection_ != LRDirection::kRight) {
 					lrDirection_ = LRDirection::kRight;
+
+					// 旋回開始時の角度を記録
+
+					// 旋回タイマーに時間を設定
+
 				}
 
 				if (velocity_.x < 0.0f) {
@@ -73,6 +79,11 @@ void Player::Update() {
 				// プレイヤーモデルを左向きに変更
 				if (lrDirection_ != LRDirection::kLeft) {
 					lrDirection_ = LRDirection::kLeft;
+
+					// 旋回開始時の角度を記録
+
+					// 旋回タイマーに時間を設定
+
 				}
 
 				if (velocity_.x > 0.0f) {
@@ -161,12 +172,17 @@ void Player::Update() {
 
 	// 行列の更新
 	worldTransformUtil_->WorldTransformUpdate(worldTransform_);
+
+	//worldTransform_.TransferMatrix();
+
 }
 
 void Player::Draw() {
 
 	// ここからモデルの描画
 	model_->Draw(worldTransform_, *camera_);
+
+	DebugText::GetInstance()->ConsolePrintf("PlayerPos:%f,%f,%f\n", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 }
 
 Player::~Player() { delete worldTransformUtil_; }

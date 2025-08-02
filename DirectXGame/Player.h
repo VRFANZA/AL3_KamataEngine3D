@@ -77,4 +77,11 @@ private:
 
 	// ジャンプ初速
 	static inline const float kJumpAcceleration = 1.0f;
+
+	// 旋回開始時の角度
+	float turnFirstRotationY_ = 0.0f;
+
+	// 旋回タイマー
+	float turnTimer_ = 0.0f;
+
 };
