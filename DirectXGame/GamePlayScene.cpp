@@ -209,6 +209,18 @@ void GamePlayScene::Initialize() {
 
 	// ワールドトランスフォーム更新クラスの生成
 	worldTransformUtil_ = new WorldTransformUtil();
+
+	// カメラの生成
+	cameraController_ = new CameraController();
+
+	// 初期化
+	cameraController_->Initialize(camera_);
+
+	// 追従対象をセット
+	cameraController_->SetTarget(player_);
+
+	// リセット
+	cameraController_->Reset();
 	
 }
 
@@ -241,6 +253,9 @@ void GamePlayScene::Update() {
 
 	// プレイヤーの更新処理
 	player_->Update();
+
+	// カメラコントローラーの更新処理
+	cameraController_->Update();
 
 	skydome_->Update();
 

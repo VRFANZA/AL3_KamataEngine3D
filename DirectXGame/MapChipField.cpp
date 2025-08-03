@@ -44,7 +44,7 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	file.close();
 
 	// CSVからマップチップデータを読み込む
-	for (uint32_t i = 0; i < ImGuiKey_NumLock; ++i) {
+	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
 		std::string line;
 		getline(mapChipCsv, line);
 

@@ -1,28 +1,6 @@
 #define NOMINMAX
 #include "Player.h"
 
-Vector3 Add(const Vector3& v1, const Vector3& v2) {
-	Vector3 result;
-
-	result.x = v1.x + v2.x;
-	result.y = v1.y + v2.y;
-	result.z = v1.z + v2.z;
-
-	return result;
-}
-
-Vector3 operator+(const Vector3& v1, const Vector3& v2) { return Add(v1, v2); }
-
-Vector3 Player::Add(const Vector3& v1, const Vector3& v2) {
-	Vector3 result;
-
-	result.x = v1.x + v2.x;
-	result.y = v1.y + v2.y;
-	result.z = v1.z + v2.z;
-
-	return result;
-}
-
 void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
 	// NULLチェック
 	assert(model);

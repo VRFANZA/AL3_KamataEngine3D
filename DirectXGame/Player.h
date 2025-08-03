@@ -1,16 +1,17 @@
 #pragma once
-#include <KamataEngine.h>
-#include <cassert>
 #include "WorldTransformUtil.h"
-#include <numbers>
+#include <KamataEngine.h>
 #include <algorithm>
+#include <cassert>
+#include <numbers>
+#include "MathUtils.h"
 
 using namespace KamataEngine;
+using namespace KamataEngine::MathUtils;
 
 class Player {
 public:
-	Vector3 Add(const Vector3& v1, const Vector3& v2);
-
+	
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -26,10 +27,13 @@ public:
 	/// </summary>
 	void Draw();
 
+	const Vector3& GetVelocity() const { return velocity_; }
+
 	~Player();
 
-
-private:
+	// ワールド変換データ
+	WorldTransform worldTransform_;
+private :
 
 	// 左右の向き
 	enum class LRDirection {
@@ -39,8 +43,6 @@ private:
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 
-	// ワールド変換データ
-	WorldTransform worldTransform_;
 
 	// カメラ
 	Camera* camera_ = nullptr;
@@ -86,5 +88,4 @@ private:
 
 	// 旋回時間
 	static inline const float kTimeTurn = 0.3f;
-
 };

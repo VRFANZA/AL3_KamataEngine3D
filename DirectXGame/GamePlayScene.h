@@ -8,6 +8,7 @@
 #include "Transform.h"
 #include "WorldTransformUtil.h"
 #include <vector>
+#include "CameraController.h"
 
 using namespace KamataEngine;
 
@@ -88,4 +89,8 @@ private:
 
 	// ワールドトランスフォーム更新クラス
 	WorldTransformUtil* worldTransformUtil_ = nullptr;
+
+	// カメラコントローラー
+	CameraController* cameraController_ = nullptr;
+
 };
