@@ -174,7 +174,7 @@ void Player::Draw() {
 	// ここからモデルの描画
 	model_->Draw(worldTransform_, *camera_);
 
-	DebugText::GetInstance()->ConsolePrintf("PlayerPos:%f,%f,%f\n", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	//DebugText::GetInstance()->ConsolePrintf("PlayerPos:%f,%f,%f\n", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 }
 
 Player::~Player() { delete worldTransformUtil_; }
