@@ -92,6 +92,12 @@ void Player::Update() {
 			velocity_ = velocity_ + Vector3(0, kJumpAcceleration, 0);
 		}
 
+		// ジャンプ開始
+		if (velocity_.y > 0.0f) {
+			// 空中状態に移行
+			onGround_ = false;
+		}
+
 		//==================================
 		// 移動量を加味して衝突判定をする
 		//==================================
@@ -110,12 +116,6 @@ void Player::Update() {
 		
 		// 天井に当たっていたら処理する
 		ProcessHitCeiling(collisionMapInfo);
-
-		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
-			// 空中状態に移行
-			onGround_ = false;
-		}
 
 	} else {
 
@@ -210,10 +210,15 @@ void Player::MapChipCollision(CollisionMapInfo& info) {
 
 void Player::IsCollisionUp(CollisionMapInfo& info) {
 
-	// nullチェック追加（念のため）
 	if (!mapChipField_) {
 		DebugText::GetInstance()->ConsolePrintf("mapChipField is null\n");
 		assert(0);
+		return;
+		
+	}
+
+	// 上昇あり？
+	if (info.displacement_.y <= 0.0f) {
 		return;
 	}
 
@@ -222,11 +227,6 @@ void Player::IsCollisionUp(CollisionMapInfo& info) {
 
 	for (uint32_t i = 0; i < positinsNew.size(); ++i) {
 		positinsNew[i] = CornerPosition(worldTransform_.translation_ + info.displacement_, static_cast<Corner>(i));
-	}
-
-	// 上昇あり？
-	if (info.displacement_.y <= 0.0f) {
-		return;
 	}
 
 	MapChipType mapChipType;
@@ -241,6 +241,7 @@ void Player::IsCollisionUp(CollisionMapInfo& info) {
 
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
+		DebugText::GetInstance()->ConsolePrintf("hit left top ceiling block at (%d, %d)\n", indexSet.xIndex, indexSet.yIndex);
 	}
 
 	// 右上の判定
@@ -249,6 +250,7 @@ void Player::IsCollisionUp(CollisionMapInfo& info) {
 
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
+		DebugText::GetInstance()->ConsolePrintf("info.isHitCeiling_ = true; disp.y = %f\n", info.displacement_.y);
 	}
 
 	// ブロックにヒット
@@ -258,7 +260,7 @@ void Player::IsCollisionUp(CollisionMapInfo& info) {
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex); // めり込んだブロックの範囲
 
 		// Y移動量を求める（スライド「移動量を求める」の式に基づく）
-		info.displacement_.y = std::max(0.0f, rect.bottom - (worldTransform_.translation_.y + kHeight / 2.0f) + kBlank);
+		info.displacement_.y = std::max(0.0f, rect.bottom - ((worldTransform_.translation_.y + kHeight / 2.0f) + kBlank));
 
 		// 天井に当たったことを記録する
 		info.isHitCeiling_ = true;
@@ -286,7 +288,7 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
 	    {-kWidth / 2.0f, +kHeight / 2.0f, 0.0f}, // 左上
 	    {-kWidth / 2.0f, -kHeight / 2.0f, 0.0f}, // 左下
 	    {+kWidth / 2.0f, +kHeight / 2.0f, 0.0f}, // 右上
-	    {-kWidth / 2.0f, -kHeight / 2.0f, 0.0f}  // 右下
+	    {+kWidth / 2.0f, -kHeight / 2.0f, 0.0f}  // 右下
 	};
 
 	return center + offsetTable[static_cast<uint32_t>(corner)];

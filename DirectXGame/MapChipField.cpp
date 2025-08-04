@@ -65,8 +65,8 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 MapChipField::IndexSet MapChipField::GetMapChipIndexSetByPosition(const Vector3& position) {
 	IndexSet result;
 
-	result.xIndex = static_cast<uint32_t>(position.x / 1.0f); // マス幅1.0f前提
-	result.yIndex = static_cast<uint32_t>((GetNumBlockVirtical() - 1) - position.y / 1.0f);
+	result.xIndex = static_cast<uint32_t>((position.x + kBlockWidth / 2.0f) / kBlockWidth);
+	result.yIndex = static_cast<uint32_t>(kNumBlockVirtical - 1 - (position.y + kBlockHeight / 2.0f) / kBlockHeight);
 
 	return result;
 }
