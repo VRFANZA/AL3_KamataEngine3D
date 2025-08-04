@@ -199,7 +199,9 @@ void GamePlayScene::Initialize() {
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
 	// プレイヤーの初期化
-	player_->Initialize(playerModel_, camera_,playerPosition);
+	//player_->Initialize(playerModel_, camera_,playerPosition);
+
+	player_->Initialize(playerModel_, camera_, playerPosition, mapChipField_);
 
 	// 天球の生成
 	skydome_ = new Skydome();

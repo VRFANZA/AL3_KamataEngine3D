@@ -5,6 +5,7 @@
 #include <cassert>
 #include <numbers>
 #include "MathUtils.h"
+#include "MapChipField.h"
 
 using namespace KamataEngine;
 using namespace KamataEngine::MathUtils;
@@ -64,12 +65,16 @@ class Player {
 	// 旋回時間
 	static inline const float kTimeTurn = 0.3f;
 
+	MapChipField* mapChipField_ = nullptr;
+
 public:
 	
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, Camera* camera, const Vector3& position);
+	//void Initialize(Model* model, Camera* camera, const Vector3& position);
+
+	void Initialize(Model* model, Camera* camera, const Vector3& position, MapChipField* mapChipField);
 
 	/// <summary>
 	/// 更新処理

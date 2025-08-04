@@ -1,7 +1,26 @@
 #define NOMINMAX
 #include "Player.h"
 
-void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
+//void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
+//	// NULLチェック
+//	assert(model);
+//	assert(camera);
+//
+//	model_ = model;
+//	camera_ = camera;
+//
+//	// ワールドトランスフォーム更新クラスの生成
+//	worldTransformUtil_ = new WorldTransformUtil();
+//
+//	worldTransform_.Initialize();
+//	worldTransform_.translation_ = position;
+//
+//	// モデルをy軸回りにπ/2(90°)回転
+//	//worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+//
+//}
+
+void Player::Initialize(Model* model, Camera* camera, const Vector3& position, MapChipField* mapChipField) {
 	// NULLチェック
 	assert(model);
 	assert(camera);
@@ -15,9 +34,10 @@ void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
-	// モデルをy軸回りにπ/2(90°)回転
-	//worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	mapChipField_ = mapChipField;
 
+	// モデルをy軸回りにπ/2(90°)回転
+	// worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 }
 
 void Player::Update() {
@@ -161,6 +181,85 @@ void Player::Update() {
 	
 	// 移動
 	worldTransform_.translation_ = worldTransform_.translation_ + velocity_;
+
+	//========================
+	// マップチップとの当たり判定（改良）
+	//========================
+	{
+		const float kBlockWidth = 1.0f;
+		const float kBlockHeight = 1.0f;
+		const float kPlayerHalfWidth = 0.8f; // プレイヤーの半分の横幅
+		const float kPlayerHeight = 0.8f;
+
+		Vector3& pos = worldTransform_.translation_;
+
+		// 下方向の当たり判定
+		{
+			float footY = pos.y - 0.01f;
+			uint32_t footYIndex = static_cast<uint32_t>((20.0f - footY) / kBlockHeight);
+			uint32_t leftXIndex = static_cast<uint32_t>((pos.x - kPlayerHalfWidth) / kBlockWidth);
+			uint32_t rightXIndex = static_cast<uint32_t>((pos.x + kPlayerHalfWidth) / kBlockWidth);
+
+			for (uint32_t x = leftXIndex; x <= rightXIndex; ++x) {
+				if (mapChipField_->GetMapChipTypeByIndex(x, footYIndex) == MapChipType::kBlock) {
+					pos.y = 20.0f - footYIndex + 0.0f;
+					velocity_.y = 0.0f;
+					onGround_ = true;
+					break;
+				}
+			}
+		}
+
+		// 上方向の当たり判定
+		{
+			float headY = pos.y + kPlayerHeight;
+			uint32_t headYIndex = static_cast<uint32_t>((20.0f - headY) / kBlockHeight);
+			uint32_t leftXIndex = static_cast<uint32_t>((pos.x - kPlayerHalfWidth) / kBlockWidth);
+			uint32_t rightXIndex = static_cast<uint32_t>((pos.x + kPlayerHalfWidth) / kBlockWidth);
+
+			for (uint32_t x = leftXIndex; x <= rightXIndex; ++x) {
+				if (mapChipField_->GetMapChipTypeByIndex(x, headYIndex) == MapChipType::kBlock) {
+					pos.y = 20.0f - headYIndex - kPlayerHeight;
+					velocity_.y = 0.0f;
+					break;
+				}
+			}
+		}
+
+		// 左方向の当たり判定
+		{
+			float leftX = pos.x - kPlayerHalfWidth;
+			uint32_t leftXIndex = static_cast<uint32_t>(leftX / kBlockWidth);
+			uint32_t topYIndex = static_cast<uint32_t>((20.0f - (pos.y + kPlayerHeight - 0.01f)) / kBlockHeight);
+			uint32_t bottomYIndex = static_cast<uint32_t>((20.0f - (pos.y + 0.01f)) / kBlockHeight);
+
+			for (uint32_t y = topYIndex; y <= bottomYIndex; ++y) {
+				if (mapChipField_->GetMapChipTypeByIndex(leftXIndex, y) == MapChipType::kBlock) {
+					pos.x = (leftXIndex + 1) * kBlockWidth + kPlayerHalfWidth + 0.01f;
+					velocity_.x = 0.0f;
+					break;
+				}
+			}
+		}
+
+		// 右方向の当たり判定
+		{
+			float rightX = pos.x + kPlayerHalfWidth;
+			uint32_t rightXIndex = static_cast<uint32_t>(rightX / kBlockWidth);
+			uint32_t topYIndex = static_cast<uint32_t>((20.0f - (pos.y + kPlayerHeight - 0.01f)) / kBlockHeight);
+			uint32_t bottomYIndex = static_cast<uint32_t>((20.0f - (pos.y + 0.01f)) / kBlockHeight);
+
+			for (uint32_t y = topYIndex; y <= bottomYIndex; ++y) {
+				if (mapChipField_->GetMapChipTypeByIndex(rightXIndex, y) == MapChipType::kBlock) {
+					pos.x = rightXIndex * kBlockWidth - kPlayerHalfWidth - 0.01f;
+					velocity_.x = 0.0f;
+					break;
+				}
+			}
+		}
+	}
+
+
 
 	// 行列の更新
 	worldTransformUtil_->WorldTransformUpdate(worldTransform_);
