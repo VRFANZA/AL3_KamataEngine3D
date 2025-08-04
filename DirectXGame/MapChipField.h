@@ -1,45 +1,25 @@
 #pragma once
 #include <KamataEngine.h>
-#include <fstream>
-#include <sstream>
 #include <cassert>
+#include <fstream>
 #include <map>
+#include <sstream>
 
 using namespace KamataEngine;
 
-// マップチップの種別
-enum class MapChipType {
-	kBlank, // 空白
-	kBlock, // ブロック
-};
-
-// マップチップデータ構造体
-struct MapChipData {
-	std::vector<std::vector<MapChipType>> data;
-};
+	// マップチップの種別
+	enum class MapChipType {
+		kBlank, // 空白
+		kBlock, // ブロック
+	};
 
 class MapChipField {
 
-public:
-	void Initialize();
+	// マップチップデータ構造体
+	struct MapChipData {
+		std::vector<std::vector<MapChipType>> data;
+	};
 
-	void Update();
-
-	void Draw();
-
-	void ResetMapChipData();
-
-	void LoadMapChipCsv(const std::string& filePath);
-
-	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
-
-	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
-
-	uint32_t GetNumBlockVirtical();
-
-	uint32_t GetNumBlockHorizontal();
-
-private:
 	// 1ブロックのサイズ
 	static inline const float kBlockWidth = 1.0f;
 	static inline const float kBlockHeight = 1.0f;
@@ -54,4 +34,39 @@ private:
 
 	Model* model_ = nullptr;
 
+public:
+
+	struct IndexSet {
+		uint32_t xIndex;
+		uint32_t yIndex;
+	};
+
+	struct Rect {
+	    float left;
+	    float right;
+	    float top;
+	    float bottom;
+	};
+
+	void Initialize();
+
+	void Update();
+
+	void Draw();
+
+	void ResetMapChipData();
+
+	void LoadMapChipCsv(const std::string& filePath);
+
+	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
+
+	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	uint32_t GetNumBlockVirtical();
+
+	uint32_t GetNumBlockHorizontal();
 };

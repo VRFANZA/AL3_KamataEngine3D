@@ -62,7 +62,28 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	}
 }
 
-MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) { 
+MapChipField::IndexSet MapChipField::GetMapChipIndexSetByPosition(const Vector3& position) {
+	IndexSet result;
+
+	result.xIndex = static_cast<uint32_t>(position.x / 1.0f); // マス幅1.0f前提
+	result.yIndex = static_cast<uint32_t>((GetNumBlockVirtical() - 1) - position.y / 1.0f);
+
+	return result;
+}
+
+MapChipField::Rect MapChipField::GetRectByIndex(uint32_t xIndex, uint32_t yIndex) {
+	Vector3 center = GetMapChipPositionByIndex(xIndex, yIndex);
+
+	Rect rect;
+	rect.left = center.x - kBlockWidth / 2.0f;
+	rect.right = center.x + kBlockWidth / 2.0f;
+	rect.top = center.y + kBlockHeight / 2.0f;
+	rect.bottom = center.y - kBlockHeight / 2.0f;
+
+	return rect;
+}
+
+MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
 
 	if (xIndex < 0 || kNumBlockHorizontal - 1 < xIndex) {
 		return MapChipType::kBlank;
@@ -75,14 +96,8 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 	return mapChipData_.data[yIndex][xIndex];
 }
 
-Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) { 
-	return Vector3(kBlockWidth * xIndex, kBlockHeight * (kNumBlockVirtical - 1 - yIndex), 0);
-}
+Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) { return Vector3(kBlockWidth * xIndex, kBlockHeight * (kNumBlockVirtical - 1 - yIndex), 0); }
 
-uint32_t MapChipField::GetNumBlockVirtical() { 
-	return kNumBlockVirtical;
-}
+uint32_t MapChipField::GetNumBlockVirtical() { return kNumBlockVirtical; }
 
-uint32_t MapChipField::GetNumBlockHorizontal() { 
-	return kNumBlockHorizontal;
-}
+uint32_t MapChipField::GetNumBlockHorizontal() { return kNumBlockHorizontal; }

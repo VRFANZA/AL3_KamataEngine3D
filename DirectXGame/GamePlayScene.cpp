@@ -185,11 +185,13 @@ void GamePlayScene::Initialize() {
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	// マップチップ
+	// マップチップの生成
 	mapChipField_ = new MapChipField;
 
+	// マップチップのcsvファイルをロード
 	mapChipField_->LoadMapChipCsv("Resources/AL3_02_04_mapchip.csv");
 
+	// マップチップを実際に生成
 	GenerateBlocks();
 
 	// プレイヤーの生成
@@ -200,6 +202,11 @@ void GamePlayScene::Initialize() {
 
 	// プレイヤーの初期化
 	player_->Initialize(playerModel_, camera_,playerPosition);
+
+	player_->SetMapChipField(mapChipField_);
+
+	// マップチップデータをセット
+	player_->SetMapChipField(mapChipField_);
 
 	// 天球の生成
 	skydome_ = new Skydome();
