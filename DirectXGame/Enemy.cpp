@@ -16,9 +16,21 @@ void Enemy::Initialize(Model* model,Camera* camera, const Vector3& position) {
 
 	// ワールドトランスフォーム更新クラスの生成
 	worldTransformUtil_ = new WorldTransformUtil();
+
+	walkTimer_ = 0.0f;
 }
 
 void Enemy::Update() {
+
+	// タイマーを加算
+	walkTimer_ = walkTimer_ + 1.0f / 60.0f;
+
+	// 回転アニメーション
+	//float param = std::sinf((2.0f * static_cast<float>(M_PI)) * walkTimer_ / kWalkMotionTime);
+	//float degree = kWalkMotionAngleStart + kWalkMotionAngleEnd * (param + 1.0f) / 2.0f;
+	//worldTransform_.rotation_.x = worldTransform_.rotation_.x * (180.0f / static_cast<float>(M_PI));
+
+	worldTransform_.rotation_.x = std::sinf((2.0f * static_cast<float>(M_PI)) * walkTimer_ / kWalkMotionTime);
 
 	// 移動
 	worldTransform_.translation_ = worldTransform_.translation_ + velocity_;

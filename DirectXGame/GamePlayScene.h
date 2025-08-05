@@ -40,8 +40,12 @@ class GamePlayScene : public BaseScene {
 	// プレイヤー
 	Player* player_ = nullptr;
 
+	//WorldTransform playerWorldTransform_;
+
 	// 敵
 	Enemy* enemy_ = nullptr;
+
+	//WorldTransform enemyWorldTransform_;
 
 	// 天球
 	Skydome* skydome_ = nullptr;
