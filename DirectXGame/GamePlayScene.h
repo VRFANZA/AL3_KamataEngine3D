@@ -40,12 +40,14 @@ class GamePlayScene : public BaseScene {
 	// プレイヤー
 	Player* player_ = nullptr;
 
-	//WorldTransform playerWorldTransform_;
-
 	// 敵
 	Enemy* enemy_ = nullptr;
 
-	//WorldTransform enemyWorldTransform_;
+	// 敵の発生数
+	uint32_t numberOfEnemies = 3;
+
+	// 敵をリスト化
+	std::list<Enemy*> enemies_;
 
 	// 天球
 	Skydome* skydome_ = nullptr;

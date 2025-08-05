@@ -164,10 +164,10 @@ void GamePlayScene::Initialize() {
 	// ここにインゲームの初期化処理を書く
 
 	// テクスチャの読み込み
-	//textureHandle_ = TextureManager::Load("uvChecker.png");
+	// textureHandle_ = TextureManager::Load("uvChecker.png");
 
 	// スプライトのインスタンスを生成
-	//sprite_ = Sprite::Create(textureHandle_, {100, 50});
+	// sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
 	// 3Dモデルの生成
 	playerModel_ = Model::CreateFromOBJ("player", true);
@@ -180,7 +180,7 @@ void GamePlayScene::Initialize() {
 
 	// カメラの初期化
 	camera_ = new Camera;
-	camera_->farZ = 1500.0f;// なんかここいじっても変わんないからCamera.hいじってる
+	camera_->farZ = 1500.0f; // なんかここいじっても変わんないからCamera.hいじってる
 	camera_->Initialize();
 
 	// デバッグカメラの生成
@@ -202,21 +202,31 @@ void GamePlayScene::Initialize() {
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
 	// プレイヤーの初期化
-	player_->Initialize(playerModel_, camera_,playerPosition);
+	player_->Initialize(playerModel_, camera_, playerPosition);
 
-	//player_->SetMapChipField(mapChipField_);
+	// player_->SetMapChipField(mapChipField_);
 
 	// マップチップデータをセット
 	player_->SetMapChipField(mapChipField_);
 
 	// 敵の生成
-	enemy_ = new Enemy;
+	// enemy_ = new Enemy;
+
+	for (uint32_t i = 0; i < numberOfEnemies; ++i) {
+		Enemy* newEnemy = new Enemy();
+
+		// 敵の初期位置をマップチップ番号で指定
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10 + (i * 2), 18 - i);
+		newEnemy->Initialize(enemyModel_, camera_, enemyPosition);
+
+		enemies_.push_back(newEnemy);
+	}
 
 	// 敵の初期位置をマップチップ番号で指定
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10, 18);
+	// Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10, 18);
 
 	// 敵の初期化
-	enemy_->Initialize(enemyModel_,camera_,enemyPosition);
+	// enemy_->Initialize(enemyModel_, camera_, enemyPosition);
 
 	// 天球の生成
 	skydome_ = new Skydome();
@@ -238,7 +248,6 @@ void GamePlayScene::Initialize() {
 
 	// リセット
 	cameraController_->Reset();
-	
 }
 
 void GamePlayScene::Update() {
@@ -272,7 +281,10 @@ void GamePlayScene::Update() {
 	player_->Update();
 
 	// 敵の更新処理
-	enemy_->Update();
+	for (auto& newEnemy : enemies_) {
+		newEnemy->Update();
+	}
+	//enemy_->Update();
 
 	// カメラコントローラーの更新処理
 	cameraController_->Update();
@@ -285,20 +297,19 @@ void GamePlayScene::Update() {
 			if (!worldTransformBlock)
 				continue;
 
-				// アフィン変換行列の作成
-				Matrix4x4 blockAffine = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+			// アフィン変換行列の作成
+			Matrix4x4 blockAffine = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
 
-				worldTransformBlock->matWorld_ = blockAffine;
+			worldTransformBlock->matWorld_ = blockAffine;
 
-				// 定数バッファに転送
-				worldTransformBlock->TransferMatrix();
+			// 定数バッファに転送
+			worldTransformBlock->TransferMatrix();
 		}
 	}
 }
 
 void GamePlayScene::Draw() {
 	// ここにインゲームの描画処理を書く
-
 
 	// スプライト描画前処理
 	Sprite::PreDraw();
@@ -315,7 +326,11 @@ void GamePlayScene::Draw() {
 	player_->Draw();
 
 	// 敵の描画
-	enemy_->Draw();
+	// 敵の描画
+	for (auto& newEnemy : enemies_) {
+		newEnemy->Draw();
+	}
+	//enemy_->Draw();
 
 	// 天球の描画
 	skydome_->Draw();
@@ -327,13 +342,12 @@ void GamePlayScene::Draw() {
 			if (!worldTransformBlock)
 				continue;
 
-				blockModel_->Draw(*worldTransformBlock, *camera_);
+			blockModel_->Draw(*worldTransformBlock, *camera_);
 		}
 	}
 
 	// 3Dモデル描画後処理
 	Model::PostDraw();
-
 }
 
 void GamePlayScene::GenerateBlocks() {
@@ -354,7 +368,7 @@ void GamePlayScene::GenerateBlocks() {
 
 		// ブロックの生成
 		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j,i) == MapChipType::kBlock) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
@@ -371,6 +385,9 @@ GamePlayScene::~GamePlayScene() {
 	delete playerModel_;
 	delete enemy_;
 	delete enemyModel_;
+	for (auto& newEnemy : enemies_) {
+		delete newEnemy;
+	}
 	delete blockModel_;
 	delete modelSkydome_;
 	delete mapChipField_;
