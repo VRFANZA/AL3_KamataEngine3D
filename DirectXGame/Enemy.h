@@ -5,6 +5,7 @@
 #include "MapChipField.h"
 
 using namespace KamataEngine;
+using namespace KamataEngine::MathUtils;
 
 class Enemy {
 	
@@ -18,6 +19,12 @@ class Enemy {
 
 	// マップチップによるフィールド
 	MapChipField* mapChipField_ = nullptr;
+
+	// 歩行速度
+	static inline const float kWalkSpeed = 0.03f;
+
+	// 速度
+	Vector3 velocity_ = {};
 
 public:
 	void Initialize(Model* model, Camera* camera, const Vector3& position);

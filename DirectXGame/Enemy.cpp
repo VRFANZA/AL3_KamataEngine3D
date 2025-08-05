@@ -1,4 +1,5 @@
 #include "Enemy.h"
+
 void Enemy::Initialize(Model* model,Camera* camera, const Vector3& position) {
 	// NULLチェック
 	assert(model);
@@ -10,11 +11,17 @@ void Enemy::Initialize(Model* model,Camera* camera, const Vector3& position) {
 
 	worldTransform_.translation_ = position;
 
+	// 速度を設定
+	velocity_ = {-kWalkSpeed, 0.0f, 0.0f};
+
 	// ワールドトランスフォーム更新クラスの生成
 	worldTransformUtil_ = new WorldTransformUtil();
 }
 
 void Enemy::Update() {
+
+	// 移動
+	worldTransform_.translation_ = worldTransform_.translation_ + velocity_;
 
 	// 行列の更新
 	worldTransformUtil_->WorldTransformUpdate(worldTransform_);
