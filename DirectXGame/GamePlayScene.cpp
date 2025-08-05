@@ -209,10 +209,13 @@ void GamePlayScene::Initialize() {
 	// マップチップデータをセット
 	player_->SetMapChipField(mapChipField_);
 
-	// 敵の生成
-	// enemy_ = new Enemy;
+	// 仮の生成処理
+	deathParticles_ = new DeathParticles;
+	deathParticles_->Initialize(playerModel_, camera_, playerPosition);
 
-	for (uint32_t i = 0; i < numberOfEnemies; ++i) {
+	// 敵の生成
+	
+	for (uint32_t i = 0; i < kNumberOfEnemies; ++i) {
 		Enemy* newEnemy = new Enemy();
 
 		// 敵の初期位置をマップチップ番号で指定
@@ -280,6 +283,10 @@ void GamePlayScene::Update() {
 	// プレイヤーの更新処理
 	player_->Update();
 
+	if (isDeathParticlesIsExist_) {
+		deathParticles_->Update();
+	}
+
 	// 敵の更新処理
 	for (auto& newEnemy : enemies_) {
 		newEnemy->Update();
@@ -328,7 +335,11 @@ void GamePlayScene::Draw() {
 	// プレイヤーの描画処理
 	player_->Draw();
 
-	// 敵の描画
+	// パーティクルの描画
+	if (isDeathParticlesIsExist_) {
+		deathParticles_->Draw();
+	}
+
 	// 敵の描画
 	for (auto& newEnemy : enemies_) {
 		newEnemy->Draw();
@@ -431,6 +442,7 @@ GamePlayScene::~GamePlayScene() {
 	// インスタンスの持ち主のみが解放
 	delete player_;
 	delete playerModel_;
+	delete deathParticles_;
 	delete enemy_;
 	delete enemyModel_;
 	for (auto& newEnemy : enemies_) {

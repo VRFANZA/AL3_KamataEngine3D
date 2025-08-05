@@ -33,11 +33,11 @@ class Player {
 	// モデル
 	Model* model_ = nullptr;
 
-	// テクスチャハンドル
-	uint32_t textereHandle_ = 0;
-
 	// ワールドトランスフォーム更新クラス
 	WorldTransformUtil* worldTransformUtil_ = nullptr;
+
+	// テクスチャハンドル
+	uint32_t textereHandle_ = 0;
 
 	// 移動速度
 	Vector3 velocity_ = {};

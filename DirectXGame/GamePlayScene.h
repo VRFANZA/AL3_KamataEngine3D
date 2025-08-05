@@ -11,6 +11,7 @@
 #include "CameraController.h"
 #include "Enemy.h"
 #include "MathUtils.h"
+#include "DeathParticles.h"
 
 using namespace KamataEngine;
 using namespace KamataEngine::MathUtils;
@@ -43,11 +44,16 @@ class GamePlayScene : public BaseScene {
 	// プレイヤー
 	Player* player_ = nullptr;
 
+	// 死んだときのパーティクル
+	DeathParticles* deathParticles_ = nullptr;
+
+	bool isDeathParticlesIsExist_ = true;
+
 	// 敵
 	Enemy* enemy_ = nullptr;
 
 	// 敵の発生数
-	uint32_t numberOfEnemies =1;
+	static inline const uint32_t kNumberOfEnemies =1;
 
 	// 敵をリスト化
 	std::list<Enemy*> enemies_;
