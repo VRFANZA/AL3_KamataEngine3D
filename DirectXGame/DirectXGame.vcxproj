@@ -117,6 +117,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Skydome.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="WorldTransformUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +206,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Skydome.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="WorldTransformUtil.h" />

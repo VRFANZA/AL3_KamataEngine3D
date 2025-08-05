@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "TitleScene.h"
 #include "GamePlayScene.h"
 #include <memory>
 
@@ -8,6 +9,7 @@ class SceneManager {
 public:
 
 	enum Scene {
+		TITLE,
 		GAME
 	};
 

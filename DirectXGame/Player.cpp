@@ -417,7 +417,8 @@ void Player::OnCollision(const Enemy* enemy) {
 
 	// ジャンプ
 	DebugText::GetInstance()->ConsolePrintf("PlayerIsHitEnemy\n");
-	velocity_ = velocity_ + Vector3(0.0f, 0.05f, 0.0f);
+	isDead_ = true;
+	//velocity_ = velocity_ + Vector3(0.0f, 0.05f, 0.0f);
 }
 
 AABB Player::GetAABB() { 

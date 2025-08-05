@@ -9,6 +9,11 @@ void SceneManager::ChangeScene(Scene scene) {
 	delete nowScene_;
 
 	switch (scene) {
+	case SceneManager::TITLE:
+		nowScene_ = new TitleScene;
+		nowScene_->Initialize();
+
+		break;
 	case SceneManager::GAME:
 		nowScene_ = new GamePlayScene;
 		nowScene_->Initialize();
@@ -17,8 +22,6 @@ void SceneManager::ChangeScene(Scene scene) {
 	default:
 		break;
 	}
-
-
 }
 
 void SceneManager::Update() { 

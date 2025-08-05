@@ -15,7 +15,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// シーンのインスタンスの生成
 	SceneManager* sceneManager = new SceneManager();
-	sceneManager->ChangeScene(SceneManager::GAME);
+	sceneManager->ChangeScene(SceneManager::TITLE);
 
 	// メインループ
 	while (true) {
@@ -26,6 +26,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 		// 更新処理
 		sceneManager->Update();
+		
 
 		// 描画開始
 		dxCommon->PreDraw();

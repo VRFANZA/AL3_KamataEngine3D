@@ -18,6 +18,14 @@ using namespace KamataEngine::MathUtils;
 
 class GamePlayScene : public BaseScene {
 
+	enum class Phase {
+		kPlay,
+		kDeath
+	};
+
+	// ゲームの現在のフェーズ
+	Phase phase_;
+
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
@@ -47,6 +55,7 @@ class GamePlayScene : public BaseScene {
 	// 死んだときのパーティクル
 	DeathParticles* deathParticles_ = nullptr;
 
+	// パーティクルが存在しているか
 	bool isDeathParticlesIsExist_ = true;
 
 	// 敵
@@ -54,6 +63,9 @@ class GamePlayScene : public BaseScene {
 
 	// 敵の発生数
 	static inline const uint32_t kNumberOfEnemies =1;
+
+	// 終了フラグ
+	bool finished_ = false;
 
 	// 敵をリスト化
 	std::list<Enemy*> enemies_;
@@ -112,7 +124,13 @@ public:
 	// 全ての当たり判定を行う
 	void CheckAllCollisions();
 
+	// フェーズの切り替え
+	void ChangePhase();
+
 	bool IsCollisionAABB(const AABB& aabb1, const AABB& aabb2);
+
+	// 終了フラグのゲッター
+	bool InFinished() const { return finished_; }
 
 	~GamePlayScene();
 

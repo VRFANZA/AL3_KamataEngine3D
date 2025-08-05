@@ -98,6 +98,9 @@ class Player {
 	// 旋回時間
 	static inline const float kTimeTurn = 0.3f;
 
+	// デスフラグ
+	bool isDead_ = false;
+
 public:
 	
 	/// <summary>
@@ -147,6 +150,9 @@ public:
 
 	//ゲッターロボ
 	const Vector3& GetVelocity() const { return velocity_; }
+
+	// デスフラグのgetter
+	bool IsDead() const { return isDead_; }
 
 	~Player();
 
