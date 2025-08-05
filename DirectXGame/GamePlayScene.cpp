@@ -479,7 +479,7 @@ void GamePlayScene::ChangePhase() {
 		}
 
 		if (deathParticles_->InFinished()) {
-			SceneManager::ChangeScene(SceneManager::TITLE);
+			SceneManager::ChangeScene(SceneManager::TITLE);//12終わり
 		}
 
 		// 敵の更新処理
