@@ -216,7 +216,7 @@ void GamePlayScene::Initialize() {
 		Enemy* newEnemy = new Enemy();
 
 		// 敵の初期位置をマップチップ番号で指定
-		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10 + (i * 2), 18 - i);
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15 + (i * 2), 18 - i);
 		newEnemy->Initialize(enemyModel_, camera_, enemyPosition);
 
 		enemies_.push_back(newEnemy);
@@ -285,6 +285,9 @@ void GamePlayScene::Update() {
 		newEnemy->Update();
 	}
 	//enemy_->Update();
+
+	// 全ての当たり判定を行う
+	CheckAllCollisions();
 
 	// カメラコントローラーの更新処理
 	cameraController_->Update();
@@ -376,6 +379,51 @@ void GamePlayScene::GenerateBlocks() {
 			}
 		}
 	}
+}
+
+void GamePlayScene::CheckAllCollisions() {
+
+	#pragma region 
+
+	{
+		// 判定対象1と2の座標
+		AABB aabb1, aabb2;
+
+		// 自キャラの座標
+		aabb1 = player_->GetAABB();
+
+		// 自キャラと全ての敵との当たり判定
+		for (Enemy* enemy : enemies_) {
+
+			// 敵の座標
+			aabb2 = enemy->GetAABB();
+
+			// AABB同士の交差判定
+			if (IsCollisionAABB(aabb1, aabb2)) {
+
+				// 衝突応答
+				// プレイヤーと敵の衝突時処理を呼び出す
+				player_->OnCollision(enemy);
+				enemy->OnCollision(player_);
+
+			}
+		}
+
+	}
+
+	#pragma endregion
+
+}
+
+bool GamePlayScene::IsCollisionAABB(const AABB& aabb1, const AABB& aabb2) {
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) &&
+		(aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) &&
+		(aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z)) {
+
+		return true;
+	}
+
+	return false;
 }
 
 GamePlayScene::~GamePlayScene() {

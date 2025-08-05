@@ -1,8 +1,8 @@
 #pragma once
+#include "MapChipField.h"
 #include "MathUtils.h"
 #include "WorldTransformUtil.h"
 #include <KamataEngine.h>
-#include "MapChipField.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <math.h>
@@ -10,8 +10,14 @@
 using namespace KamataEngine;
 using namespace KamataEngine::MathUtils;
 
+class Player;
+
 class Enemy {
-	
+
+	// 敵の当たり判定のサイズ
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
+
 	WorldTransform worldTransform_;
 
 	WorldTransformUtil* worldTransformUtil_ = nullptr;
@@ -49,4 +55,12 @@ public:
 	void Draw();
 
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
+
+	void OnCollision(const Player* player);
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	// AABBを取得
+	AABB GetAABB();
 };

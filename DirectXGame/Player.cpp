@@ -1,5 +1,6 @@
 #define NOMINMAX
 #include "Player.h"
+#include "Enemy.h"
 #include "MapChipField.h"
 
 void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
@@ -372,7 +373,6 @@ void Player::IsCollisionLeft(CollisionMapInfo& info) {
 
 void Player::IsCollisionRight(CollisionMapInfo& info) {
 	if (!mapChipField_) {
-		DebugText::GetInstance()->ConsolePrintf("mapChipField is null\n");
 		assert(0);
 		return;
 	}
@@ -410,6 +410,27 @@ void Player::IsCollisionRight(CollisionMapInfo& info) {
 	}
 }
 
+void Player::OnCollision(const Enemy* enemy) {
+
+	// 無意味な処理を入れておく
+	(void)enemy;
+
+	// ジャンプ
+	DebugText::GetInstance()->ConsolePrintf("PlayerIsHitEnemy\n");
+	velocity_ = velocity_ + Vector3(0.0f, 0.05f, 0.0f);
+}
+
+AABB Player::GetAABB() { 
+	Vector3 worldPos = GetWorldPosition();
+
+	AABB aabb;
+
+	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
+	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
+
+	return aabb;
+}
+
 // ③判定結果を反映して移動させる
 void Player::ReflectCollisionResult(const CollisionMapInfo& info) {
 	// 移動
@@ -423,6 +444,18 @@ void Player::ProcessHitCeiling(const CollisionMapInfo& info) {
 		DebugText::GetInstance()->ConsolePrintf("hit ceiling\n");
 		velocity_.y = 0;
 	}
+}
+
+Vector3 Player::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }
 
 Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {

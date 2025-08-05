@@ -2,6 +2,12 @@
 #include <KamataEngine.h>
 
 namespace KamataEngine::MathUtils {
+
+	struct AABB {
+	Vector3 min; // 最小点
+	Vector3 max; // 最大点
+	};
+
 	// ベクトル加算
     inline Vector3 Add(const Vector3& a, const Vector3& b) { return {a.x + b.x, a.y + b.y, a.z + b.z}; }
 

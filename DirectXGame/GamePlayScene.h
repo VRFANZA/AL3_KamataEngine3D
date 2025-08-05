@@ -10,10 +10,13 @@
 #include <vector>
 #include "CameraController.h"
 #include "Enemy.h"
+#include "MathUtils.h"
 
 using namespace KamataEngine;
+using namespace KamataEngine::MathUtils;
 
 class GamePlayScene : public BaseScene {
+
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
@@ -99,6 +102,11 @@ public:
 	/// 表示ブロックの生成
 	/// </summary>
 	void GenerateBlocks();
+
+	// 全ての当たり判定を行う
+	void CheckAllCollisions();
+
+	bool IsCollisionAABB(const AABB& aabb1, const AABB& aabb2);
 
 	~GamePlayScene();
 

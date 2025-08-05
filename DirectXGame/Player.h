@@ -12,6 +12,8 @@ using namespace KamataEngine::MathUtils;
 // 前方宣言
 class MapChipField;
 
+class Enemy;
+
 class Player {
 
 	// 左右の向き
@@ -124,12 +126,19 @@ public:
 	void IsCollisionLeft(CollisionMapInfo& info);   // マップ衝突判定左方向
 	void IsCollisionRight(CollisionMapInfo& info);  // マップ衝突判定右方向
 
+	void OnCollision(const Enemy* enemy);
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	// AABBを取得
+	AABB GetAABB();
+
 	// ③判定結果を反映して移動させる
 	void ReflectCollisionResult(const CollisionMapInfo& info);
 
 	// ④天井に接触している場合の処理
 	void ProcessHitCeiling(const CollisionMapInfo& info);
-
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
