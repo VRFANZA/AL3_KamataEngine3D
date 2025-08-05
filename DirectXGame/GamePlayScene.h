@@ -44,7 +44,7 @@ class GamePlayScene : public BaseScene {
 	Enemy* enemy_ = nullptr;
 
 	// 敵の発生数
-	uint32_t numberOfEnemies = 3;
+	uint32_t numberOfEnemies =1;
 
 	// 敵をリスト化
 	std::list<Enemy*> enemies_;
