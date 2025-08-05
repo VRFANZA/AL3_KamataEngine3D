@@ -17,7 +17,7 @@ void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
 	worldTransform_.translation_ = position;
 
 	// モデルをy軸回りにπ/2(90°)回転
-	// worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	//worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 }
 
 void Player::Update() {

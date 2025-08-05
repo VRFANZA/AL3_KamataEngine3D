@@ -9,10 +9,52 @@
 #include "WorldTransformUtil.h"
 #include <vector>
 #include "CameraController.h"
+#include "Enemy.h"
 
 using namespace KamataEngine;
 
 class GamePlayScene : public BaseScene {
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+
+	// スプライト
+	Sprite* sprite_ = nullptr;
+
+	// 3Dモデル
+	Model* playerModel_ = nullptr;
+	Model* enemyModel_ = nullptr;
+	Model* blockModel_ = nullptr;
+	Model* modelSkydome_ = nullptr;
+
+	// ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
+
+	// カメラ
+	Camera* camera_ = nullptr;
+
+	// デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr;
+	bool isDebugCameraActive_ = true;
+
+	// プレイヤー
+	Player* player_ = nullptr;
+
+	// 敵
+	Enemy* enemy_ = nullptr;
+
+	// 天球
+	Skydome* skydome_ = nullptr;
+
+	// マップチップ
+	MapChipField* mapChipField_ = nullptr;
+
+	// ワールドトランスフォーム更新クラス
+	WorldTransformUtil* worldTransformUtil_ = nullptr;
+
+	// カメラコントローラー
+	CameraController* cameraController_ = nullptr;
+
 public:
 
 	/// <summary>
@@ -53,44 +95,5 @@ public:
 	void GenerateBlocks();
 
 	~GamePlayScene();
-
-private:
-
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0;
-
-	// スプライト
-	Sprite* sprite_ = nullptr;
-
-	// 3Dモデル
-	Model* playerModel_ = nullptr;
-	Model* blockModel_ = nullptr;
-	Model* modelSkydome_ = nullptr;
-
-	// ワールドトランスフォーム
-	WorldTransform worldTransform_;
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
-
-	// カメラ
-	Camera* camera_ = nullptr;
-
-	// デバッグカメラ
-	DebugCamera* debugCamera_ = nullptr;
-	bool isDebugCameraActive_ = true;
-
-	// プレイヤー
-	Player* player_ = nullptr;
-
-	// 天球
-	Skydome* skydome_ = nullptr;
-
-	// マップチップ
-	MapChipField* mapChipField_ = nullptr;
-
-	// ワールドトランスフォーム更新クラス
-	WorldTransformUtil* worldTransformUtil_ = nullptr;
-
-	// カメラコントローラー
-	CameraController* cameraController_ = nullptr;
 
 };

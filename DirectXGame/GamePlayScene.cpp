@@ -171,6 +171,7 @@ void GamePlayScene::Initialize() {
 
 	// 3Dモデルの生成
 	playerModel_ = Model::CreateFromOBJ("player", true);
+	enemyModel_ = Model::CreateFromOBJ("Enemy", true);
 	blockModel_ = Model::CreateFromOBJ("Block", true);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
@@ -203,10 +204,19 @@ void GamePlayScene::Initialize() {
 	// プレイヤーの初期化
 	player_->Initialize(playerModel_, camera_,playerPosition);
 
-	player_->SetMapChipField(mapChipField_);
+	//player_->SetMapChipField(mapChipField_);
 
 	// マップチップデータをセット
 	player_->SetMapChipField(mapChipField_);
+
+	// 敵の生成
+	enemy_ = new Enemy;
+
+	// 敵の初期位置をマップチップ番号で指定
+	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10, 18);
+
+	// 敵の初期化
+	enemy_->Initialize(enemyModel_,camera_,enemyPosition);
 
 	// 天球の生成
 	skydome_ = new Skydome();
@@ -261,6 +271,9 @@ void GamePlayScene::Update() {
 	// プレイヤーの更新処理
 	player_->Update();
 
+	// 敵の更新処理
+	enemy_->Update();
+
 	// カメラコントローラーの更新処理
 	cameraController_->Update();
 
@@ -300,6 +313,9 @@ void GamePlayScene::Draw() {
 
 	// プレイヤーの描画処理
 	player_->Draw();
+
+	// 敵の描画
+	enemy_->Draw();
 
 	// 天球の描画
 	skydome_->Draw();
@@ -353,6 +369,8 @@ GamePlayScene::~GamePlayScene() {
 	// インスタンスの持ち主のみが解放
 	delete player_;
 	delete playerModel_;
+	delete enemy_;
+	delete enemyModel_;
 	delete blockModel_;
 	delete modelSkydome_;
 	delete mapChipField_;
