@@ -72,10 +72,10 @@ class Player {
 	static inline const float kBlank = 0.1f;
 
 	// 移動減衰率
-	static inline const float kAttenuation = 0.05f;
+	static inline const float kAttenuation = 0.1f;
 
 	// 最高速度制限値
-	static inline const float kLimitRunSpeed = 1.0f;
+	static inline const float kLimitRunSpeed = 0.5f;
 
 	// 接地状態フラグ
 	bool onGround_ = true;
@@ -87,7 +87,7 @@ class Player {
 	static inline const float kLimitFallSpeed = 1.0f;
 
 	// ジャンプ初速
-	static inline const float kJumpAcceleration = 0.3f;
+	static inline const float kJumpAcceleration = 0.23f;
 
 	// 旋回開始時の角度
 	float turnFirstRotationY_ = 0.0f;
