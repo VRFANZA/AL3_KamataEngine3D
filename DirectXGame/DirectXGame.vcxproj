@@ -110,6 +110,7 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="DeathParticles.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChipField.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="DeathParticles.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="MapChipField.h" />
     <ClInclude Include="MathUtils.h" />

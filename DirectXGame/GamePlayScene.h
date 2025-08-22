@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include "MathUtils.h"
 #include "DeathParticles.h"
+#include "Fade.h"
 
 using namespace KamataEngine;
 using namespace KamataEngine::MathUtils;
@@ -19,12 +20,16 @@ using namespace KamataEngine::MathUtils;
 class GamePlayScene : public BaseScene {
 
 	enum class Phase {
+		kFadeIn,
 		kPlay,
-		kDeath
+		kDeath,
+		kFadeOut
 	};
 
 	// ゲームの現在のフェーズ
 	Phase phase_;
+
+	Fade* fade_ = nullptr;
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;

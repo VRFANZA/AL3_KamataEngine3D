@@ -170,7 +170,7 @@ void GamePlayScene::Initialize() {
 	// sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
 	// ゲームプレイフェーズから開始
-	phase_ = Phase::kPlay;
+	phase_ = Phase::kFadeIn;
 
 	// 3Dモデルの生成
 	playerModel_ = Model::CreateFromOBJ("player", true);
@@ -253,13 +253,19 @@ void GamePlayScene::Initialize() {
 
 	// リセット
 	cameraController_->Reset();
+
+	// フェードの生成
+	fade_ = new Fade;
+	fade_->Initialize();
+
+	fade_->Start(Fade::Status::FadeIn, 3.0f);
 }
 
 void GamePlayScene::Update() {
 	// ここにインゲームの更新処理を書く
 
 	ChangePhase();
-	
+	fade_->Update();
 }
 
 void GamePlayScene::Draw() {
@@ -310,6 +316,10 @@ void GamePlayScene::Draw() {
 
 	// 3Dモデル描画後処理
 	Model::PostDraw();
+
+	// フェードの描画
+	fade_->Draw();
+
 }
 
 void GamePlayScene::GenerateBlocks() {
@@ -376,6 +386,15 @@ void GamePlayScene::CheckAllCollisions() {
 
 void GamePlayScene::ChangePhase() {
 	switch (phase_) {
+
+	case GamePlayScene::Phase::kFadeIn:
+
+		if (fade_->IsFinished()) {
+			fade_->Stop();
+			phase_ = Phase::kPlay;
+		}
+
+		break;
 	case GamePlayScene::Phase::kPlay:
 
 		// デバッグカメラの更新
@@ -479,7 +498,8 @@ void GamePlayScene::ChangePhase() {
 		}
 
 		if (deathParticles_->InFinished()) {
-			SceneManager::ChangeScene(SceneManager::TITLE);//12終わり
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
+			phase_ = Phase::kFadeOut;
 		}
 
 		// 敵の更新処理
@@ -509,6 +529,12 @@ void GamePlayScene::ChangePhase() {
 		}
 
 		break;
+
+		case GamePlayScene::Phase::kFadeOut:
+		if (fade_->IsFinished()) {
+			    SceneManager::ChangeScene(SceneManager::TITLE); // 12終わり
+		}
+			
 	default:
 		break;
 	}

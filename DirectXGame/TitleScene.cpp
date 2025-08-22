@@ -11,13 +11,47 @@ void TitleScene::Initialize() {
 	Vector3 playerPosition = {0.0f, 0.0f, 0.0f};
 	player_->Initialize(playerModel_, camera_, playerPosition);
 
+	fade_ = new Fade;
+	fade_->Initialize();
+
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
 }
 
 void TitleScene::Update() { 
-	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
-		SceneManager::ChangeScene(SceneManager::GAME);
-		//finished_ = true;
+
+	switch (phase_) {
+	case TitleScene::Phase::kFadeIn:
+
+		if (fade_->IsFinished()) {
+			fade_->Stop();
+			phase_ = Phase::kMain;
+		}
+
+		break;
+	case TitleScene::Phase::kMain:
+
+		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
+			phase_ = Phase::kFadeOut;
+			// finished_ = true;
+		}
+
+		break;
+	case TitleScene::Phase::kFadeOut:
+
+		if (fade_->IsFinished()) {
+			SceneManager::ChangeScene(SceneManager::GAME);
+		}
+
+		break;
+	default:
+		break;
 	}
+
+	
+
+	fade_->Update();
+
 }
 
 void TitleScene::Draw() {
@@ -29,5 +63,13 @@ void TitleScene::Draw() {
 
 	// 3Dモデル描画後処理
 	Model::PostDraw();
+
+	fade_->Draw();
+
+}
+
+TitleScene::~TitleScene() {
+
+	delete fade_;
 
 }
