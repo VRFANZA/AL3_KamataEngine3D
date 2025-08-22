@@ -18,7 +18,7 @@ void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
 	worldTransform_.translation_ = position;
 
 	// モデルをy軸回りにπ/2(90°)回転
-	//worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 }
 
 void Player::Update() {
@@ -197,11 +197,11 @@ void Player::Update() {
 		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
 
 		// 状況に応じた角度を取得する
-		// float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
+		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
 
 		// 自キャラの角度を設定する
 		// 線形補間で角度補間
-		// worldTransform_.rotation_.y = turnFirstRotationY_ + (destinationRotationY - turnFirstRotationY_) * t;
+		worldTransform_.rotation_.y = turnFirstRotationY_ + (destinationRotationY - turnFirstRotationY_) * t;
 	}
 
 	// 実際に移動
@@ -210,7 +210,7 @@ void Player::Update() {
 	// 行列の更新
 	worldTransformUtil_->WorldTransformUpdate(worldTransform_);
 
-	// worldTransform_.TransferMatrix();
+	//worldTransform_.TransferMatrix();
 }
 
 void Player::Draw() {

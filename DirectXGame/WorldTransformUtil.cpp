@@ -153,9 +153,12 @@ Matrix4x4 WorldTransformUtil::MakeAffineMatrix(Vector3& scale, Vector3& rotate, 
 	// アフィン行列の作成
 	//====================
 	// 上で作った行列からアフィン行列を作る
+	Matrix4x4 SRMatrix;
 	Matrix4x4 affineMatrix4x4;
 
-	affineMatrix4x4 = Multiply(translateMatrix4x4, Multiply(rotateMatrix4x4, scaleMatrix4x4));
+	SRMatrix = Multiply(scaleMatrix4x4, rotateMatrix4x4);
+	affineMatrix4x4 = Multiply(SRMatrix, translateMatrix4x4);
+	//affineMatrix4x4 = Multiply(translateMatrix4x4, Multiply(rotateMatrix4x4, scaleMatrix4x4));
 
 	return affineMatrix4x4;
 }
