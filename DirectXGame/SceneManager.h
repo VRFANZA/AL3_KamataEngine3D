@@ -10,7 +10,8 @@ public:
 
 	enum Scene {
 		TITLE,
-		GAME
+		GAME,
+		Clear,
 	};
 
 	/// <summary>
