@@ -1,7 +1,6 @@
 #include "ClearScene.h"
 
 void ClearScene::Initialize() {
-
 	playerModel_ = Model::CreateFromOBJ("player", true);
 	camera_ = new Camera;
 	camera_->farZ = 1500.0f; // なんかここいじっても変わんないからCamera.hいじってる
@@ -39,7 +38,7 @@ void ClearScene::Update() {
 	case ClearScene::Phase::kFadeOut:
 
 		if (fade_->IsFinished()) {
-			SceneManager::ChangeScene(SceneManager::TITLE);
+			SceneManager::ChangeScene(SceneManager::GAME);
 		}
 
 		break;
@@ -60,4 +59,8 @@ void ClearScene::Draw() {
 	Model::PostDraw();
 
 	fade_->Draw();
+}
+
+ClearScene::~ClearScene() { 
+	delete fade_;
 }

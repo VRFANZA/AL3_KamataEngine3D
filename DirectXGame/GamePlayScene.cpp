@@ -531,8 +531,19 @@ void GamePlayScene::ChangePhase() {
 		break;
 
 	case GamePlayScene::Phase::kFadeOut:
-		if (fade_->IsFinished()) {
-			    SceneManager::ChangeScene(SceneManager::TITLE); // 12終わり
+
+		// プレイヤー死亡時はタイトルに戻る
+		if (player_->IsDead()) {
+			if (fade_->IsFinished()) {
+				SceneManager::ChangeScene(SceneManager::TITLE);
+			}
+		}
+
+		// クリア時はクリアシーンに移動
+		if (isClear_) {
+			if (fade_->IsFinished()) {
+				SceneManager::ChangeScene(SceneManager::Clear);
+			}
 		}
 
 		break;

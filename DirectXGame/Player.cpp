@@ -26,11 +26,16 @@ void Player::Update() {
 	//=============
 	// 移動入力
 	//=============
+	
 	// 接地確認
 	if (onGround_) {
 
-		// 接地時のみ左右移動操作可能
+		//=============
+		// 移動入力
+		//=============
+		
 
+		// 接地時のみ左右移動操作可能
 		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
 			// 左右加速
 			Vector3 acceleration = {};
@@ -143,19 +148,19 @@ void Player::Update() {
 		}
 
 		//// 着地フラグ
-		//bool landing = false;
+		// bool landing = false;
 		////==================================
 		//// 接地状態の切り替え
 		////==================================
 
 		//// 落下速度
-		//velocity_ = velocity_ + Vector3(0, -kGravityAcceleration, 0);
+		// velocity_ = velocity_ + Vector3(0, -kGravityAcceleration, 0);
 
 		//// 落下速度制限
-		//velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
+		// velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 
 		//// 降下中？
-		//if (velocity_.y < 0) {
+		// if (velocity_.y < 0) {
 
 		//	// Y座標が地面以下になったら着地
 		//	if (worldTransform_.translation_.y <= 1.0f) {
@@ -163,7 +168,7 @@ void Player::Update() {
 		//	}
 		//}
 
-		//if (landing) {
+		// if (landing) {
 		//	// めり込み排斥
 		//	worldTransform_.translation_.y = 1.0f;
 
@@ -210,7 +215,7 @@ void Player::Update() {
 	// 行列の更新
 	worldTransformUtil_->WorldTransformUpdate(worldTransform_);
 
-	//worldTransform_.TransferMatrix();
+	// worldTransform_.TransferMatrix();
 }
 
 void Player::Draw() {
@@ -415,13 +420,12 @@ void Player::OnCollision(const Enemy* enemy) {
 	// 無意味な処理を入れておく
 	(void)enemy;
 
-	// ジャンプ
+	// 敵に当たったら死ぬ
 	DebugText::GetInstance()->ConsolePrintf("PlayerIsHitEnemy\n");
 	isDead_ = true;
-	//velocity_ = velocity_ + Vector3(0.0f, 0.05f, 0.0f);
 }
 
-AABB Player::GetAABB() { 
+AABB Player::GetAABB() {
 	Vector3 worldPos = GetWorldPosition();
 
 	AABB aabb;

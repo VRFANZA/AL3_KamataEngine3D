@@ -73,6 +73,9 @@ class GamePlayScene : public BaseScene {
 	// 終了フラグ
 	bool finished_ = false;
 
+	// クリアフラグ
+	bool isClear_ = false;
+
 	// 敵をリスト化
 	std::list<Enemy*> enemies_;
 

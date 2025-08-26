@@ -1,15 +1,16 @@
 #pragma once
 #include "BaseScene.h"
-#include "Fade.h"
 #include "Player.h"
-#include "SceneManager.h"
 #include "WorldTransformUtil.h"
 #include <KamataEngine.h>
 #include <cassert>
+#include "SceneManager.h"
+#include "Fade.h"
 
 using namespace KamataEngine;
 
-class ClearScene {
+class ClearScene : public BaseScene {
+
 	Model* playerModel_ = nullptr;
 
 	// カメラ

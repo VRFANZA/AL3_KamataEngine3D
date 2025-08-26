@@ -26,7 +26,6 @@ void CameraController::Update() {
 	camera_->translation_.y = max(camera_->translation_.y, targetPosition_.y + kMargin.bottom);
 	camera_->translation_.y = min(camera_->translation_.y, targetPosition_.y + kMargin.top);
 
-
 	// 範囲制限処理（移動範囲を超えないよう clamp）
 	camera_->translation_.x = std::clamp(camera_->translation_.x, movableArea_.left, movableArea_.right);
 	camera_->translation_.y = std::clamp(camera_->translation_.y, movableArea_.bottom, movableArea_.top);

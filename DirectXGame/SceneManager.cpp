@@ -19,6 +19,11 @@ void SceneManager::ChangeScene(Scene scene) {
 		nowScene_->Initialize();
 
 		break;
+	case SceneManager::Clear:
+		nowScene_ = new ClearScene;
+		nowScene_->Initialize();
+
+		break;
 	default:
 		break;
 	}
