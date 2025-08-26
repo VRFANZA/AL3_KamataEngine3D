@@ -23,7 +23,8 @@ class GamePlayScene : public BaseScene {
 		kFadeIn,
 		kPlay,
 		kDeath,
-		kFadeOut
+		kFadeOut,
+		kPose,
 	};
 
 	// ゲームの現在のフェーズ

@@ -15,7 +15,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// シーンのインスタンスの生成
 	SceneManager* sceneManager = new SceneManager();
-	sceneManager->ChangeScene(SceneManager::TITLE);
+
+	// 最初のシーンを設定
+	sceneManager->ChangeScene(SceneManager::GAME);
 
 	// メインループ
 	while (true) {

@@ -530,11 +530,20 @@ void GamePlayScene::ChangePhase() {
 
 		break;
 
-		case GamePlayScene::Phase::kFadeOut:
+	case GamePlayScene::Phase::kFadeOut:
 		if (fade_->IsFinished()) {
 			    SceneManager::ChangeScene(SceneManager::TITLE); // 12終わり
 		}
+
+		break;
 			
+	case GamePlayScene::Phase::kPose:
+
+
+
+		break;
+
+
 	default:
 		break;
 	}

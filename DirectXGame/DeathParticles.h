@@ -41,7 +41,7 @@ class DeathParticles {
 	ObjectColor objectColor_;
 
 	// 色の数値
-	Vector4 color_;
+	Vector4 color_ = {1, 1, 1, 1};
 
 	// 終了フラグ
 	bool isFinished_ = false;
