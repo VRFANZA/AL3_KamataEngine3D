@@ -130,10 +130,10 @@ void Player::Update() {
 		}
 
 	} else {
-		//// 空中状態：重力を適用しつつ、マップチップ衝突判定で床当たり判定
-		// velocity_ = velocity_ + Vector3(0, -kGravityAcceleration, 0);
-		// velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
-		//// 衝突判定
+		// 空中状態：重力を適用しつつ、マップチップ衝突判定で床当たり判定
+		velocity_ = velocity_ + Vector3(0, -kGravityAcceleration, 0);
+		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
+		// 衝突判定
 		CollisionMapInfo collisionMapInfo;
 		collisionMapInfo.displacement_ = velocity_;
 		MapChipCollision(collisionMapInfo);
@@ -146,40 +146,40 @@ void Player::Update() {
 			onGround_ = true;
 		}
 
-		// 着地フラグ
-		bool landing = false;
-		//==================================
-		// 接地状態の切り替え
-		//==================================
+		//// 着地フラグ
+		//bool landing = false;
+		////==================================
+		//// 接地状態の切り替え
+		////==================================
 
-		// 落下速度
-		velocity_ = velocity_ + Vector3(0, -kGravityAcceleration, 0);
+		//// 落下速度
+		//velocity_ = velocity_ + Vector3(0, -kGravityAcceleration, 0);
 
-		// 落下速度制限
-		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
+		//// 落下速度制限
+		//velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 
-		// 降下中？
-		if (velocity_.y < 0) {
+		//// 降下中？
+		//if (velocity_.y < 0) {
 
-			// Y座標が地面以下になったら着地
-			if (worldTransform_.translation_.y <= 1.0f) {
-				landing = true;
-			}
-		}
+		//	// Y座標が地面以下になったら着地
+		//	if (worldTransform_.translation_.y <= 1.0f) {
+		//		landing = true;
+		//	}
+		//}
 
-		if (landing) {
-			// めり込み排斥
-			worldTransform_.translation_.y = 1.0f;
+		//if (landing) {
+		//	// めり込み排斥
+		//	worldTransform_.translation_.y = 1.0f;
 
-			// 摩擦で横方向速度が減衰
-			velocity_.x *= (1.0f - kAttenuation);
+		//	// 摩擦で横方向速度が減衰
+		//	velocity_.x *= (1.0f - kAttenuation);
 
-			// 下方向速度をリセット
-			velocity_.y = 0.0f;
+		//	// 下方向速度をリセット
+		//	velocity_.y = 0.0f;
 
-			// 接地状態に移行
-			onGround_ = true;
-		}
+		//	// 接地状態に移行
+		//	onGround_ = true;
+		//}
 	}
 
 	//=============

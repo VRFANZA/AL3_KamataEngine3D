@@ -87,7 +87,7 @@ class Player {
 	static inline const float kLimitFallSpeed = 1.0f;
 
 	// ジャンプ初速
-	static inline const float kJumpAcceleration = 0.3f;
+	static inline const float kJumpAcceleration = 0.23f;
 
 	// 旋回開始時の角度
 	float turnFirstRotationY_ = 0.0f;
