@@ -177,6 +177,7 @@ void GamePlayScene::Initialize() {
 	enemyModel_ = Model::CreateFromOBJ("Enemy", true);
 	blockModel_ = Model::CreateFromOBJ("Block", true);
 	throughBlockModel_ = Model::CreateFromOBJ("ThroughBlock", true);
+	deathFloor_ = Model::CreateFromOBJ("DeathFloor", true);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// ワールドトランスフォームの初期化
@@ -341,8 +342,8 @@ void GamePlayScene::Draw() {
 				break;
 			case MapChipType::kDeathFloor:
 				// 専用モデルが無ければ暫定で通常ブロックを使用
-				if (blockModel_) {
-					blockModel_->Draw(*wt, *camera_);
+				if (deathFloor_) {
+					deathFloor_->Draw(*wt, *camera_);
 				}
 				break;
 			case MapChipType::kGoal:
@@ -620,6 +621,8 @@ GamePlayScene::~GamePlayScene() {
 		delete newEnemy;
 	}
 	delete blockModel_;
+	delete throughBlockModel_;
+	delete deathFloor_;
 	delete modelSkydome_;
 	delete mapChipField_;
 	delete worldTransformUtil_;

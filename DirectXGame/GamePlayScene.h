@@ -43,6 +43,7 @@ class GamePlayScene : public BaseScene {
 	Model* enemyModel_ = nullptr;
 	Model* blockModel_ = nullptr;
 	Model* throughBlockModel_ = nullptr;
+	Model* deathFloor_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 
 	// ワールドトランスフォーム
