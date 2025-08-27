@@ -325,7 +325,9 @@ void GamePlayScene::Draw() {
 			if (!wt) {
 				continue;
 			}
+
 			MapChipType type = mapChipField_->GetMapChipTypeByIndex(j, i);
+
 			switch (type) {
 			case MapChipType::kBlock:
 				if (blockModel_) {
@@ -338,6 +340,12 @@ void GamePlayScene::Draw() {
 				}
 				break;
 			case MapChipType::kDeathFloor:
+				// 専用モデルが無ければ暫定で通常ブロックを使用
+				if (blockModel_) {
+					blockModel_->Draw(*wt, *camera_);
+				}
+				break;
+			case MapChipType::kGoal:
 				// 専用モデルが無ければ暫定で通常ブロックを使用
 				if (blockModel_) {
 					blockModel_->Draw(*wt, *camera_);
