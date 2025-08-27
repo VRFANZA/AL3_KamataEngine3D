@@ -1,6 +1,14 @@
 #include "ClearScene.h"
 
 void ClearScene::Initialize() {
+
+	// テクスチャの読み込み
+	// ここ書き換える=================================================
+	textureHandle_ = TextureManager::Load("uvChecker.png");
+
+	// スプライトのインスタンスを生成
+	sprite_ = Sprite::Create(textureHandle_, {0, 0});
+
 	playerModel_ = Model::CreateFromOBJ("player", true);
 	camera_ = new Camera;
 	camera_->farZ = 1500.0f; // なんかここいじっても変わんないからCamera.hいじってる
@@ -38,7 +46,7 @@ void ClearScene::Update() {
 	case ClearScene::Phase::kFadeOut:
 
 		if (fade_->IsFinished()) {
-			SceneManager::ChangeScene(SceneManager::GAME);
+			SceneManager::ChangeScene(SceneManager::TITLE);
 		}
 
 		break;
@@ -50,6 +58,16 @@ void ClearScene::Update() {
 }
 
 void ClearScene::Draw() {
+
+	// スプライト描画前処理
+	Sprite::PreDraw();
+
+	// ここからスプライトの描画
+	sprite_->Draw();
+
+	// スプライト描画後処理
+	Sprite::PostDraw();
+
 	// 3Dモデル描画前処理
 	Model::PreDraw();
 
@@ -62,5 +80,6 @@ void ClearScene::Draw() {
 }
 
 ClearScene::~ClearScene() { 
+	delete sprite_;
 	delete fade_;
 }

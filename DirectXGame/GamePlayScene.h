@@ -71,7 +71,7 @@ class GamePlayScene : public BaseScene {
 	Enemy* enemy_ = nullptr;
 
 	// 敵の発生数
-	static inline const uint32_t kNumberOfEnemies =1;
+	static inline const uint32_t kNumberOfEnemies =4;
 
 	// 終了フラグ
 	bool finished_ = false;

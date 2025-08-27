@@ -164,10 +164,11 @@ void GamePlayScene::Initialize() {
 	// ここにインゲームの初期化処理を書く
 
 	// テクスチャの読み込み
-	// textureHandle_ = TextureManager::Load("uvChecker.png");
+	// ここ書き換える=================================================
+	textureHandle_ = TextureManager::Load("uvChecker.png");
 
 	// スプライトのインスタンスを生成
-	// sprite_ = Sprite::Create(textureHandle_, {100, 50});
+	sprite_ = Sprite::Create(textureHandle_, {0, 0});
 
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kFadeIn;
@@ -225,7 +226,7 @@ void GamePlayScene::Initialize() {
 		Enemy* newEnemy = new Enemy();
 
 		// 敵の初期位置をマップチップ番号で指定
-		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15 + (i * 2), 18 - i);
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15 + (i * 12), 18 - (i*2));
 		newEnemy->Initialize(enemyModel_, camera_, enemyPosition);
 
 		enemies_.push_back(newEnemy);
@@ -279,6 +280,7 @@ void GamePlayScene::Draw() {
 	Sprite::PreDraw();
 
 	// ここからスプライトの描画
+	sprite_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

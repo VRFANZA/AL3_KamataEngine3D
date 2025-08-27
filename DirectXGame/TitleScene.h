@@ -11,6 +11,12 @@ using namespace KamataEngine;
 
 class TitleScene : public BaseScene {
 
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+
+	// スプライト
+	Sprite* sprite_ = nullptr;
+
 	Model* playerModel_ = nullptr;
 
 	// カメラ
