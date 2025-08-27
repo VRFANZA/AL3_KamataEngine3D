@@ -178,6 +178,7 @@ void GamePlayScene::Initialize() {
 	blockModel_ = Model::CreateFromOBJ("Block", true);
 	throughBlockModel_ = Model::CreateFromOBJ("ThroughBlock", true);
 	deathFloor_ = Model::CreateFromOBJ("DeathFloor", true);
+	goalModel_ = Model::CreateFromOBJ("Goal", true);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// ワールドトランスフォームの初期化
@@ -348,8 +349,8 @@ void GamePlayScene::Draw() {
 				break;
 			case MapChipType::kGoal:
 				// 専用モデルが無ければ暫定で通常ブロックを使用
-				if (blockModel_) {
-					blockModel_->Draw(*wt, *camera_);
+				if (goalModel_) {
+					goalModel_->Draw(*wt, *camera_);
 				}
 				break;
 			default: // kBlank, kGoal 等は描画しない or 専用モデルがあれば分岐を追加
@@ -506,6 +507,10 @@ void GamePlayScene::ChangePhase() {
 
 			// 仮の生成処理
 			deathParticles_->Initialize(playerModel_, camera_, deathParticlesPosition);
+		}
+
+		if (player_->IsClear()) {
+			phase_ = Phase::kFadeOut;
 		}
 
 		break;

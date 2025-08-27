@@ -269,6 +269,12 @@ void Player::IsCollisionUp(CollisionMapInfo& info) {
 		DebugText::GetInstance()->ConsolePrintf("hit left top ceiling block at (%d, %d)\n", indexSet.xIndex, indexSet.yIndex);
 	}
 
+	// ゴールの場合の処理
+	if (mapChipType == MapChipType::kGoal) {
+		DebugText::GetInstance()->ConsolePrintf("hit GOAL");
+		isClear_ = true;
+	}
+
 	// 右上の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positinsNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
@@ -276,6 +282,12 @@ void Player::IsCollisionUp(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
 		DebugText::GetInstance()->ConsolePrintf("info.isHitCeiling_ = true; disp.y = %f\n", info.displacement_.y);
+	}
+
+	// ゴールの場合の処理
+	if (mapChipType == MapChipType::kGoal) {
+		DebugText::GetInstance()->ConsolePrintf("hit GOAL");
+		isClear_ = true;
 	}
 
 	// ブロックにヒット
@@ -318,6 +330,17 @@ void Player::IsCollisionBottom(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock || mapChipType == MapChipType::kThroughBlock) {
 		hit = true;
 		DebugText::GetInstance()->ConsolePrintf("hit left bottom block at (%d, %d)\n", indexSet.xIndex, indexSet.yIndex);
+	}
+
+	// 死ぬ床の場合
+	if (mapChipType == MapChipType::kDeathFloor) {
+		isDead_ = true;
+	}
+
+	// ゴールの場合の処理
+	if (mapChipType == MapChipType::kGoal) {
+		DebugText::GetInstance()->ConsolePrintf("hit GOAL");
+		isClear_ = true;
 	}
 
 	// 右下の判定
