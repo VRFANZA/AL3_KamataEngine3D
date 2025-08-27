@@ -510,6 +510,7 @@ void GamePlayScene::ChangePhase() {
 		}
 
 		if (player_->IsClear()) {
+			fade_->Start(Fade::Status::FadeOut, 3.0f);
 			phase_ = Phase::kFadeOut;
 		}
 

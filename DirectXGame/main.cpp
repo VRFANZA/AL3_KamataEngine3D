@@ -17,7 +17,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	SceneManager* sceneManager = new SceneManager();
 
 	// 最初のシーンを設定
-	sceneManager->ChangeScene(SceneManager::GAME);
+	sceneManager->ChangeScene(SceneManager::TITLE);
 
 	// メインループ
 	while (true) {
