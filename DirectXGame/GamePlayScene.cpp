@@ -176,6 +176,7 @@ void GamePlayScene::Initialize() {
 	playerModel_ = Model::CreateFromOBJ("player", true);
 	enemyModel_ = Model::CreateFromOBJ("Enemy", true);
 	blockModel_ = Model::CreateFromOBJ("Block", true);
+	throughBlockModel_ = Model::CreateFromOBJ("ThroughBlock", true);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// ワールドトランスフォームの初期化
@@ -193,7 +194,8 @@ void GamePlayScene::Initialize() {
 	mapChipField_ = new MapChipField;
 
 	// マップチップのcsvファイルをロード
-	mapChipField_->LoadMapChipCsv("Resources/AL3_02_04_mapchip.csv");
+	// mapChipField_->LoadMapChipCsv("Resources/AL3_02_04_mapchip.csv");
+	mapChipField_->LoadMapChipCsv("Resources/AL3_Assessment_mapchip.csv");
 
 	// マップチップを実際に生成
 	GenerateBlocks();
@@ -216,7 +218,7 @@ void GamePlayScene::Initialize() {
 	deathParticles_->Initialize(playerModel_, camera_, playerPosition);
 
 	// 敵の生成
-	
+
 	for (uint32_t i = 0; i < kNumberOfEnemies; ++i) {
 		Enemy* newEnemy = new Enemy();
 
@@ -298,19 +300,52 @@ void GamePlayScene::Draw() {
 	for (auto& newEnemy : enemies_) {
 		newEnemy->Draw();
 	}
-	//enemy_->Draw();
+	// enemy_->Draw();
 
 	// 天球の描画
 	skydome_->Draw();
 
-	// ここからモデルの描画
-	// ブロックの描画
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock)
-				continue;
+	//// ここからモデルの描画
+	//// ブロックの描画
+	// for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+	//	for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+	//		if (!worldTransformBlock)
+	//			continue;
 
-			blockModel_->Draw(*worldTransformBlock, *camera_);
+	//		blockModel_->Draw(*worldTransformBlock, *camera_);
+	//		throughBlockModel_->Draw(*worldTransformBlock, *camera_);
+	//	}
+	//}
+
+	// ここからモデルの描画
+	// ブロックの描画（マップチップ種別ごとにモデルを描き分け）
+	for (uint32_t i = 0; i < worldTransformBlocks_.size(); ++i) {
+		for (uint32_t j = 0; j < worldTransformBlocks_[i].size(); ++j) {
+			WorldTransform* wt = worldTransformBlocks_[i][j];
+			if (!wt) {
+				continue;
+			}
+			MapChipType type = mapChipField_->GetMapChipTypeByIndex(j, i);
+			switch (type) {
+			case MapChipType::kBlock:
+				if (blockModel_) {
+					blockModel_->Draw(*wt, *camera_);
+				}
+				break;
+			case MapChipType::kThroughBlock:
+				if (throughBlockModel_) {
+					throughBlockModel_->Draw(*wt, *camera_);
+				}
+				break;
+			case MapChipType::kDeathFloor:
+				// 専用モデルが無ければ暫定で通常ブロックを使用
+				if (blockModel_) {
+					blockModel_->Draw(*wt, *camera_);
+				}
+				break;
+			default: // kBlank, kGoal 等は描画しない or 専用モデルがあれば分岐を追加
+				break;
+			}
 		}
 	}
 
@@ -319,7 +354,6 @@ void GamePlayScene::Draw() {
 
 	// フェードの描画
 	fade_->Draw();
-
 }
 
 void GamePlayScene::GenerateBlocks() {
@@ -340,7 +374,10 @@ void GamePlayScene::GenerateBlocks() {
 
 		// ブロックの生成
 		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock
+				|| mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kThroughBlock 
+				|| mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kDeathFloor 
+				|| mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kGoal) {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
@@ -352,7 +389,7 @@ void GamePlayScene::GenerateBlocks() {
 
 void GamePlayScene::CheckAllCollisions() {
 
-	#pragma region 
+#pragma region
 
 	{
 		// 判定対象1と2の座標
@@ -374,14 +411,11 @@ void GamePlayScene::CheckAllCollisions() {
 				// プレイヤーと敵の衝突時処理を呼び出す
 				player_->OnCollision(enemy);
 				enemy->OnCollision(player_);
-
 			}
 		}
-
 	}
 
-	#pragma endregion
-
+#pragma endregion
 }
 
 void GamePlayScene::ChangePhase() {
@@ -540,20 +574,17 @@ void GamePlayScene::ChangePhase() {
 		}
 
 		// クリア時はクリアシーンに移動
-		if (isClear_) {
+		if (player_->IsClear()) {
 			if (fade_->IsFinished()) {
 				SceneManager::ChangeScene(SceneManager::Clear);
 			}
 		}
 
 		break;
-			
+
 	case GamePlayScene::Phase::kPose:
 
-
-
 		break;
-
 
 	default:
 		break;
@@ -561,9 +592,7 @@ void GamePlayScene::ChangePhase() {
 }
 
 bool GamePlayScene::IsCollisionAABB(const AABB& aabb1, const AABB& aabb2) {
-	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) &&
-		(aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) &&
-		(aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z)) {
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) && (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) && (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z)) {
 
 		return true;
 	}

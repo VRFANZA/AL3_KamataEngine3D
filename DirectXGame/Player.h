@@ -87,7 +87,7 @@ class Player {
 	static inline const float kLimitFallSpeed = 1.0f;
 
 	// ジャンプ初速
-	static inline const float kJumpAcceleration = 0.23f;
+	static inline const float kJumpAcceleration = 0.3f;
 
 	// 旋回開始時の角度
 	float turnFirstRotationY_ = 0.0f;
@@ -100,6 +100,9 @@ class Player {
 
 	// デスフラグ
 	bool isDead_ = false;
+
+	// クリアフラグ
+	bool isClear_ = false;
 
 public:
 	
@@ -153,6 +156,9 @@ public:
 
 	// デスフラグのgetter
 	bool IsDead() const { return isDead_; }
+
+	// クリアフラグのゲッターロボ
+	bool IsClear() const { return isClear_; }
 
 	~Player();
 

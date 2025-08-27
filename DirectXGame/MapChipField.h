@@ -7,12 +7,14 @@
 
 using namespace KamataEngine;
 
-	// マップチップの種別
-	enum class MapChipType {
-		kBlank, // 空白
-		kBlock, // ブロック
-		kGoal,  // ゴール
-	};
+// マップチップの種別
+enum class MapChipType {
+	kBlank,        // 空白
+	kBlock,        // ブロック
+	kThroughBlock, // すり抜けるブロック
+	kDeathFloor,   // 死ぬ床
+	kGoal,         // ゴール
+};
 
 class MapChipField {
 
@@ -36,17 +38,16 @@ class MapChipField {
 	Model* model_ = nullptr;
 
 public:
-
 	struct IndexSet {
 		uint32_t xIndex;
 		uint32_t yIndex;
 	};
 
 	struct Rect {
-	    float left;
-	    float right;
-	    float top;
-	    float bottom;
+		float left;
+		float right;
+		float top;
+		float bottom;
 	};
 
 	void Initialize();

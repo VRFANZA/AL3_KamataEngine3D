@@ -42,6 +42,7 @@ class GamePlayScene : public BaseScene {
 	Model* playerModel_ = nullptr;
 	Model* enemyModel_ = nullptr;
 	Model* blockModel_ = nullptr;
+	Model* throughBlockModel_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 
 	// ワールドトランスフォーム
@@ -72,9 +73,6 @@ class GamePlayScene : public BaseScene {
 
 	// 終了フラグ
 	bool finished_ = false;
-
-	// クリアフラグ
-	bool isClear_ = false;
 
 	// 敵をリスト化
 	std::list<Enemy*> enemies_;

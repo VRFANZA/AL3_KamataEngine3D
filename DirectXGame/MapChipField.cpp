@@ -8,9 +8,11 @@ void MapChipField::Draw() {}
 
 namespace {
 static std::map<std::string, MapChipType> mapChipTable = {
-    {"0", MapChipType::kBlank},
-    {"1", MapChipType::kBlock},
-    {"2", MapChipType::kGoal },
+    {"0", MapChipType::kBlank       },
+    {"1", MapChipType::kBlock       },
+    {"2", MapChipType::kThroughBlock},
+    {"3", MapChipType::kDeathFloor  },
+    {"4", MapChipType::kGoal        },
 };
 
 }
@@ -91,11 +93,7 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 	}
 
 	if (yIndex < 0 || kNumBlockVirtical - 1 < yIndex) {
-		return MapChipType::kBlock;
-	}
-
-	if (yIndex < 0 || kNumBlockVirtical - 1 < yIndex) {
-		return MapChipType::kGoal;
+		return MapChipType::kBlank;
 	}
 
 	return mapChipData_.data[yIndex][xIndex];
