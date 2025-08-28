@@ -280,7 +280,7 @@ void GamePlayScene::Draw() {
 	Sprite::PreDraw();
 
 	// ここからスプライトの描画
-	sprite_->Draw();
+	//sprite_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
