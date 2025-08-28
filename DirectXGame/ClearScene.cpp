@@ -4,7 +4,7 @@ void ClearScene::Initialize() {
 
 	// テクスチャの読み込み
 	// ここ書き換える=================================================
-	textureHandle_ = TextureManager::Load("uvChecker.png");
+	textureHandle_ = TextureManager::Load("CLEAR.png");
 
 	// スプライトのインスタンスを生成
 	sprite_ = Sprite::Create(textureHandle_, {0, 0});
